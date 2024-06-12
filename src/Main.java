@@ -62,9 +62,13 @@ public class Main extends PApplet {
 
     @Override
     public void keyPressed() {
-        if (key == CODED) {
-            game.keyPressed(keyCode);
-        }
+        System.out.println("keyPressed: " + keyCode);
+        System.out.println(keyCode);
+        System.out.println("keyPressed: " + key);
+        System.out.println(key);
+//        if (key == CODED) {
+        if (game != null) game.keyPressed(keyCode);
+//        }
     }
 
     public void initializeGame() {
@@ -87,7 +91,7 @@ public class Main extends PApplet {
         pushMatrix();
         translate(0, 0);
         fill(0, 0, 71);
-        rect(0, 0, CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE, CONSTANTS.CHUNKS_VERTICALLY / 2 * CONSTANTS.CHUNK_SIZE);
+        rect(0, 0, CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE, (int) (7.5 * CONSTANTS.CHUNK_SIZE) + 8);
         popMatrix();
 
         if (splashScreen != null) {

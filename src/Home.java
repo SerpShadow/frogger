@@ -21,25 +21,26 @@ public class Home {
     }
 
     private void drawHome(PApplet pApplet) {
+        int offsetY = (int) (1.5 * CONSTANTS.CHUNK_SIZE);
         for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTALLY * 2; i++) {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(2);
-                    bottom.draw(pApplet, new Point(i * 8, 24));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY));
                     break;
                 case 1:
                 case 2:
                     bottom.setFrame(4);
-                    bottom.draw(pApplet, new Point(i * 8, 24));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY));
                     break;
                 case 3:
                     bottom.setFrame(0);
-                    bottom.draw(pApplet, new Point(i * 8, 24));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY));
                     break;
                 case 4:
                 case 5:
                     bottom.setFrame(8);
-                    bottom.draw(pApplet, new Point(i * 8, 24));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY));
                     break;
             }
         }
@@ -48,16 +49,16 @@ public class Home {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(10);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 8));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 8));
                     break;
                 case 3:
                     bottom.setFrame(6);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 8));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 8));
                     break;
                 case 4:
                 case 5:
                     bottom.setFrame(8);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 8));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 8));
                     break;
             }
         }
@@ -66,16 +67,16 @@ public class Home {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(16);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 16));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 16));
                     break;
                 case 3:
                     bottom.setFrame(12);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 16));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 16));
                     break;
                 case 4:
                 case 5:
                     bottom.setFrame(4);
-                    bottom.draw(pApplet, new Point(i * 8, 24 + 16));
+                    bottom.draw(pApplet, new Point(i * 8, offsetY + 16));
                     break;
             }
         }

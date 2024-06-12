@@ -1,28 +1,22 @@
 import General.CONSTANTS;
-import SpriteLib.ANCHORTYPE;
-import SpriteLib.MultiSprite;
 import SpriteLib.Point;
 import Text.*;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 public class Game {
 
-    boolean isIntro = true;
+    GAME_STAGE gameStage = GAME_STAGE.GAME_INTRO;
+
     GameIntro gameIntro;
-
-    boolean isGameOver = false;
     ScoreRanking scoreRanking;
-
     GameController gameController;
-
 
     Text titleScore;
     Text titleHiScore;
     Text displayScore;
     Text displayHiScore;
-
-    MultiSprite multiSprite = new MultiSprite(CONSTANTS.CHUNK_SIZE / 2, CONSTANTS.CHUNK_SIZE / 2, ANCHORTYPE.TOP_LEFT);
 
     int score = 0;
     int level = 0;
@@ -50,11 +44,20 @@ public class Game {
 //        Writer wr = new FileWriter("123.txt");
     }
 
-    public void keyPressed(int key) {
-        if (isIntro || isGameOver) {
+    public void keyPressed(int keyCode) {
+//        System.out.println("keyPressed: " + keyCode);
+//        System.out.println(keyCode);
+        if (gameStage == GAME_STAGE.GAME_INTRO) {
+            if (gameIntro.getGameIntroStage() == GAME_INTRO_STAGE.SCORE_RANKING) {
+                if (keyCode == PConstants.BEVEL) {
+                    gameStage = GAME_STAGE.MAIN;
+                }
+            }
+        } else if (gameStage == GAME_STAGE.SCORE_RANKING) {
             // todo: handle space-bar
+
         } else {
-            gameController.keyPressed(key, this);
+            gameController.keyPressed(keyCode, this);
         }
     }
 
@@ -93,16 +96,16 @@ public class Game {
         titleHiScore.draw(pApplet);
         displayScore.draw(pApplet);
 
-        if (isIntro) {
-            // todo: render GameIntro
-            gameIntro.draw(pApplet);
-        } else if (isGameOver) {
-            scoreRanking.draw(pApplet);
-            // todo: render ScoreRanking
-        } else {
-            gameController.draw(pApplet);
-            // todo: render GameController
+        switch (gameStage) {
+            case GAME_INTRO:
+                gameIntro.draw(pApplet);
+                break;
+            case MAIN:
+                gameController.draw(pApplet);
+                break;
+            case SCORE_RANKING:
+                scoreRanking.draw(pApplet);
+                break;
         }
-
     }
 }

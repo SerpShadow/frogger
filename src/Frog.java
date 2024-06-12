@@ -10,16 +10,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Frog {
 
-    private int width = CONSTANTS.CHUNK_SIZE;
-    private int height = CONSTANTS.CHUNK_SIZE;
+    private final int width = CONSTANTS.CHUNK_SIZE;
+    private final int height = CONSTANTS.CHUNK_SIZE;
     private boolean dead = false;
 
 
-    SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
-    private Point positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
-    private Point positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
+    private SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
+    private Point positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 13 * CONSTANTS.CHUNK_SIZE);
+    private Point positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 13 * CONSTANTS.CHUNK_SIZE);
 
-    public Frog(PApplet pApplet) {
+    private int movementSpeed;
+
+    public Frog(PApplet pApplet, int movementSpeed) {
+        this.movementSpeed = movementSpeed;
         PImage frogSprite = pApplet.loadImage("assets/frog.png");
 
         // Movement
@@ -55,14 +58,34 @@ public class Frog {
         sequencedSprite.gotoSequence("up");
     }
 
-    public Frog(PApplet pApplet, Point startPosition) {
-        this(pApplet);
-        positionCurrent = startPosition;
-        positionAbsolute = startPosition;
+    public Frog(PApplet pApplet, int movementSpeed, Point startPosition) {
+        this(pApplet, movementSpeed);
+        positionCurrent = new Point(startPosition.getX(), startPosition.getY());
+        positionAbsolute = new Point(startPosition.getX(), startPosition.getY());
+    }
+
+    public SequencedSprite getSequencedSprite() {
+        return sequencedSprite;
+    }
+
+    public Point getPositionAbsolute() {
+        return positionAbsolute;
+    }
+
+    public void setPositionAbsolute(Point positionAbsolute) {
+        this.positionAbsolute = positionAbsolute;
+    }
+
+    public Point getPositionCurrent() {
+        return positionCurrent;
     }
 
     public boolean isDead() {
         return dead;
+    }
+
+    public boolean isMoving() {
+        return positionCurrent.getX() != positionAbsolute.getX() || positionCurrent.getY() != positionAbsolute.getY();
     }
 
     public Hitbox getHitbox() {
@@ -114,6 +137,8 @@ public class Frog {
         positionAbsolute.setX(positionAbsolute.getX() + width);
     }
 
+
+
     public void onDeath() {
         if (dead) return;
         dead = true;
@@ -129,18 +154,17 @@ public class Frog {
     }
 
     public void draw(PApplet pApplet) {
-        int movement = CONSTANTS.SPEED_FROG;
         if (positionAbsolute.getX() < positionCurrent.getX()) {
-            positionCurrent.setX(positionCurrent.getX() - movement);
+            positionCurrent.setX(positionCurrent.getX() - movementSpeed);
         }
         if (positionAbsolute.getX() > positionCurrent.getX()) {
-            positionCurrent.setX(positionCurrent.getX() + movement);
+            positionCurrent.setX(positionCurrent.getX() + movementSpeed);
         }
         if (positionAbsolute.getY() < positionCurrent.getY()) {
-            positionCurrent.setY(positionCurrent.getY() - movement);
+            positionCurrent.setY(positionCurrent.getY() - movementSpeed);
         }
         if (positionAbsolute.getY() > positionCurrent.getY()) {
-            positionCurrent.setY(positionCurrent.getY() + movement);
+            positionCurrent.setY(positionCurrent.getY() + movementSpeed);
         }
         sequencedSprite.draw(pApplet, positionCurrent);
     }

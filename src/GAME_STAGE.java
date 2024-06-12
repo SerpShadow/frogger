@@ -1,0 +1,6 @@
+public enum GAME_STAGE {
+    SPLASH_SCREEN,
+    GAME_INTRO,
+    MAIN,
+    SCORE_RANKING
+}

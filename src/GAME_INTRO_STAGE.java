@@ -1,0 +1,7 @@
+public enum GAME_INTRO_STAGE {
+    SPAWNING,
+    MOVING_UP,
+    TITLE,
+    POINT_TABLE,
+    SCORE_RANKING
+}

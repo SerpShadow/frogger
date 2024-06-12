@@ -2,8 +2,9 @@ package General;
 
 public interface CONSTANTS {
     int CHUNK_SIZE = 16;
+    int CHUNK_SIZE_HALF = CHUNK_SIZE / 2;
     int CHUNKS_HORIZONTALLY = 14;
-    int CHUNKS_VERTICALLY = 16;
+    int CHUNKS_VERTICALLY = 15;
     int SPEED_FROG = 4;
     int POINTS_PER_STEP = 10;
     int POINTS_PER_FROG = 50;

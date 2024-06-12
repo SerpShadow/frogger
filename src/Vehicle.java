@@ -20,7 +20,7 @@ public class Vehicle {
 
         switch (vehicleType) {
             case TRUCK:
-                position.setY(9 * CONSTANTS.CHUNK_SIZE);
+                position.setY(8 * CONSTANTS.CHUNK_SIZE);
                 width *= 2;
                 speed = -1;
                 multiSprite = new MultiSprite(width, height, ANCHORTYPE.TOP_LEFT);
@@ -28,31 +28,31 @@ public class Vehicle {
 //                hitbox = new Hitbox(position.getY() + 3, position.getX() + width - 2, position.getY() + height - 3, position.getX() + 3);
                 break;
             case RACE_CAR:
-                position.setY(10 * CONSTANTS.CHUNK_SIZE);
+                position.setY(9 * CONSTANTS.CHUNK_SIZE);
                 speed = 3;
                 multiSprite = new MultiSprite(width, height, ANCHORTYPE.TOP_LEFT);
                 multiSprite.addFrames(pApplet, spriteMap, 7 * CONSTANTS.CHUNK_SIZE, 0, 1);
 //                hitbox = new Hitbox(position.getY() + 1, position.getX() + width, position.getY() + height - 1, position.getX());
                 break;
             case COUPE:
-                position.setY(11 * CONSTANTS.CHUNK_SIZE);
+                position.setY(10 * CONSTANTS.CHUNK_SIZE);
                 speed = -1;
                 multiSprite = new MultiSprite(width, height, ANCHORTYPE.TOP_LEFT);
                 multiSprite.addFrames(pApplet, spriteMap, 5 * CONSTANTS.CHUNK_SIZE + 8, 0, 1);
 //                hitbox = new Hitbox(position.getY() + 3, position.getX() + width - 1, position.getY() + height - 3, position.getX());
                 break;
             case BULLDOZER:
-                position.setY(12 * CONSTANTS.CHUNK_SIZE);
+                position.setY(11 * CONSTANTS.CHUNK_SIZE);
                 speed = 1;
                 multiSprite = new MultiSprite(width, height, ANCHORTYPE.TOP_LEFT);
                 multiSprite.addFrames(pApplet, spriteMap, CONSTANTS.CHUNK_SIZE + 8, 0, 1);
 //                hitbox = new Hitbox(position.getY() + 2, position.getX() + width - 1, position.getY() + height - 2, position.getX() + 1);
                 break;
             case DUNE_BUGGY:
-                position.setY(13 * CONSTANTS.CHUNK_SIZE);
+                position.setY(12 * CONSTANTS.CHUNK_SIZE);
                 speed = -2;
                 multiSprite = new MultiSprite(width, height, ANCHORTYPE.TOP_LEFT);
-                multiSprite.addFrames(pApplet, spriteMap, 0, CONSTANTS.CHUNK_SIZE, 1);
+                multiSprite.addFrames(pApplet, spriteMap, 7 * CONSTANTS.CHUNK_SIZE, CONSTANTS.CHUNK_SIZE, 1);
 //                hitbox = new Hitbox(position.getY() + 1, position.getX() + width, position.getY() + height - 1, position.getX());
                 break;
             default:

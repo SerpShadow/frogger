@@ -27,16 +27,16 @@ public class GameController {
 //        generateFloatings(spriteMap);
 
         home = new Home(pApplet, spriteMap);
-        medianStrip = new Grass(pApplet, spriteMap, 8 * CONSTANTS.CHUNK_SIZE);
+        medianStrip = new Grass(pApplet, spriteMap, 7 * CONSTANTS.CHUNK_SIZE);
         generateRivers(pApplet);
         generateVehicles(pApplet);
-        startStrip = new Grass(pApplet, spriteMap, 14 * CONSTANTS.CHUNK_SIZE);
+        startStrip = new Grass(pApplet, spriteMap, 13 * CONSTANTS.CHUNK_SIZE);
 
-        frog = new Frog(pApplet);
+        frog = new Frog(pApplet, CONSTANTS.SPEED_FROG);
     }
 
-    public void keyPressed(int key, Game game) {
-        frog.keyPressed(key, game);
+    public void keyPressed(int keyCode, Game game) {
+        frog.keyPressed(keyCode, game);
     }
 
     private void generateFloatings(PImage spriteMap) {

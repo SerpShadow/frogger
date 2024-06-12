@@ -16,7 +16,7 @@ public class Text {
 
     private String[] string;
 
-    MultiSprite multiSprite = new MultiSprite(CONSTANTS.CHUNK_SIZE / 2, CONSTANTS.CHUNK_SIZE / 2, ANCHORTYPE.TOP_LEFT);
+    MultiSprite multiSprite = new MultiSprite(CONSTANTS.CHUNK_SIZE_HALF, CONSTANTS.CHUNK_SIZE_HALF, ANCHORTYPE.TOP_LEFT);
 
     public Text(PApplet pApplet, Point position, TEXT_COLOR textColor) {
         this.position = position;
