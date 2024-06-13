@@ -7,7 +7,7 @@ import processing.core.PImage;
 
 public class Game {
 
-    GAME_STAGE gameStage = GAME_STAGE.GAME_INTRO;
+    GAME_STAGE gameStage = GAME_STAGE.MAIN;
 
     GameIntro gameIntro;
     ScoreRanking scoreRanking;
@@ -19,7 +19,7 @@ public class Game {
     Text displayHiScore;
 
     int score = 0;
-    int level = 0;
+    int level = 1;
     int lives = 7;
 
     long endTime = System.currentTimeMillis() + 60 * 1000;
@@ -30,8 +30,8 @@ public class Game {
 
         // three stages of game
         gameIntro = new GameIntro(pApplet);
-        scoreRanking = new ScoreRanking(pApplet);
         gameController = new GameController(pApplet, this);
+        scoreRanking = new ScoreRanking(pApplet);
 
 
         titleScore = new Text(pApplet, new Point(2 * CONSTANTS.CHUNK_SIZE, 0 + 1), TEXT_COLOR.WHITE, "1-UP"); // adding +1 for better optic

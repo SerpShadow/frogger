@@ -14,8 +14,9 @@ public class GameController {
     private Grass startStrip;
     private Frog frog;
 
+    private boolean[] homesOccupied = new boolean[5];
     private ArrayList<River> rivers = new ArrayList();
-    private ArrayList<Lane> lanes = new ArrayList();
+    private ArrayList<Lane> lanes = new ArrayList(); // todo: switch to array
 
 //    private ArrayList<Log> logs = new ArrayList();
 

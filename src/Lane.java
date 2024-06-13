@@ -3,39 +3,36 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
-public class Lane {
+public abstract class Lane {
 
-    private PApplet pApplet;
-    private ArrayList<Vehicle> vehicles = new ArrayList<>();
+    private final PApplet pApplet;
+    private final ArrayList<Vehicle> vehicles = new ArrayList<>();
 
 
     public Lane(PApplet pApplet) {
         this.pApplet = pApplet;
-//        PImage vehiclesSprite = pApplet.loadImage("assets/vehicles.png");
-//        for (int i = 0; i < amount; i++) {
-//            Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, UTILS.generateVehicleXPosition(width, i, amount));
-//            vehicles.add(vehicle);
-//        }
-
     }
 
-    protected void generateVehicles(VEHICLE_TYPE vehicleType, int width, int amount, int speed) {
+    protected void generateVehicles(VEHICLE_TYPE vehicleType, int amount, int speed) {
         PImage vehiclesSprite = pApplet.loadImage("assets/vehicles.png");
         for (int i = 0; i < amount; i++) {
-            // todo: speed is in class, not from lane nor level
-            Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, UTILS.generateVehicleXPosition(width, i, amount));
+            Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, speed, UTILS.generateVehicleXPosition(vehicleType.getWidth(), i, amount));
             vehicles.add(vehicle);
         }
     }
 
-    public boolean checkCollision(Hitbox froggerHitbox) {
+    public abstract boolean checkCollision(Hitbox hitbox);
+
+    public boolean checkCollision(Hitbox froggerHitbox, int chunksY) {
         for (Vehicle vehicle : vehicles) {
-            if (UTILS.isColliding(froggerHitbox, vehicle.getHitbox())) {
+            if (UTILS.isColliding(froggerHitbox, vehicle.getHitboxAbsolute(chunksY))) {
+                System.out.println("Collision found");
                 return true;
             }
         }
         return false;
     }
+
 
     public void draw(PApplet pApplet) {
         for (Vehicle vehicle : vehicles) {

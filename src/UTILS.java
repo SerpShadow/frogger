@@ -18,4 +18,8 @@ public class UTILS {
 
     }
 
+    public static int chunksToPixel(double chunks) {
+        return (int) (chunks * CONSTANTS.CHUNK_SIZE);
+    }
+
 }
