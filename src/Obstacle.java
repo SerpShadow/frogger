@@ -1,4 +1,6 @@
 import General.CONSTANTS;
+import General.Hitbox;
+import General.UTILS;
 import SpriteLib.Point;
 import processing.core.PApplet;
 

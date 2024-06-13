@@ -11,4 +11,17 @@ public interface CONSTANTS {
     int POINTS_PER_LEVEL = 1000;
     int POINTS_PER_SECOND = 10;
     int RESPAWN_DELAY = 2; // sec
+    LevelData[] LEVEL_LIST = new LevelData[]{
+            new LevelData(
+                    2,
+                    1,
+                    2,
+                    2,
+                    2,
+                    1,
+                    2,
+                    1,
+                    2,
+                    1)
+    };
 }

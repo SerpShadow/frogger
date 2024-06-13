@@ -1,3 +1,5 @@
+package General;
+
 public class Hitbox {
     private int top;
     private int right;

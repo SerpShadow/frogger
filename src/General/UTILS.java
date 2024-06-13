@@ -1,4 +1,4 @@
-import General.CONSTANTS;
+package General;
 
 import java.util.Random;
 
@@ -21,5 +21,16 @@ public class UTILS {
     public static int chunksToPixel(double chunks) {
         return (int) (chunks * CONSTANTS.CHUNK_SIZE);
     }
+
+    private int currentLevel = 1;
+
+    public void increaseLevel() {
+        this.currentLevel += 1;
+    }
+
+    public LevelData getCurrentLevelData() {
+        return CONSTANTS.LEVEL_LIST[currentLevel - 1];
+    }
+
 
 }

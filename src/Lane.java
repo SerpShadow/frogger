@@ -1,3 +1,5 @@
+import General.Hitbox;
+import General.UTILS;
 import processing.core.PApplet;
 import processing.core.PImage;
 

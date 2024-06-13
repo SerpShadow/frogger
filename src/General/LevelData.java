@@ -1,3 +1,5 @@
+package General;
+
 public class LevelData {
     private int vehicleTruckAmount;
     private int vehicleTruckSpeed;

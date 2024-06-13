@@ -1,3 +1,5 @@
+import General.UTILS;
+
 public enum VEHICLE_TYPE {
     TRUCK(UTILS.chunksToPixel(2)),
     RACE_CAR(UTILS.chunksToPixel(1)),

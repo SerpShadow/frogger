@@ -1,3 +1,5 @@
+import General.Hitbox;
+import General.UTILS;
 import processing.core.PApplet;
 
 public class LaneBulldozer extends Lane {

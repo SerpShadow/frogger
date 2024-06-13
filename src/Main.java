@@ -16,20 +16,6 @@ public class Main extends PApplet {
 //        new ArrayList<>();
 //    };
 
-
-//    int currentLevel = 0;
-//
-//    private LevelData[] LevelList = new LevelData[]{
-//            new LevelData(2, 1, 2, 2, 2, 1, 2, 1, 2, 1)
-//    };
-//
-//    public LevelData getCurrentLevelData() {
-//        return LevelList[currentLevel];
-//    }
-
-
-//    levelData[0] =
-
     /**
      * Statische main-Funktion als erste Methode beim Programmstart
      *

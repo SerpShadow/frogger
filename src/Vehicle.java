@@ -1,4 +1,5 @@
 import General.CONSTANTS;
+import General.Hitbox;
 import SpriteLib.ANCHORTYPE;
 import SpriteLib.MultiSprite;
 import processing.core.PApplet;

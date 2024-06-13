@@ -1,4 +1,5 @@
 import General.CONSTANTS;
+import General.Hitbox;
 import SpriteLib.*;
 import processing.core.PConstants;
 import processing.core.PImage;

@@ -1,9 +1,10 @@
 import General.CONSTANTS;
+import General.Hitbox;
+import General.UTILS;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameController {
 
