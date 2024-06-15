@@ -40,6 +40,10 @@ public class UTILS {
         return currentLevel;
     }
 
+    public static void setCurrentLevel(int currentLevel) {
+        UTILS.currentLevel = currentLevel;
+    }
+
     public static LevelData getCurrentLevelData() {
         if (currentLevel > 5) return CONSTANTS.LEVEL_LIST[4]; // level 5 is max
         return CONSTANTS.LEVEL_LIST[currentLevel - 1];

@@ -2,7 +2,7 @@ import General.Hitbox;
 import General.UTILS;
 import processing.core.PApplet;
 
-public abstract class River {
+public abstract class River extends Floor {
 
     private RIVER_TYPE riverType;
     private double speed;
@@ -21,7 +21,7 @@ public abstract class River {
         return speed;
     }
 
-    public abstract boolean isFrogOnFloating(Hitbox frogHitbox);
+    public abstract boolean checkCollision(Hitbox frogHitbox);
 
 
 

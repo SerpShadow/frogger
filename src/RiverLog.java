@@ -2,6 +2,7 @@ import General.CONSTANTS;
 import General.Hitbox;
 import General.UTILS;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class RiverLog extends River {
     private Crocodile crocodile;
 
 
-    public RiverLog(PApplet pApplet, RIVER_TYPE riverType, int amount, double speed) {
+    public RiverLog(PApplet pApplet, PImage logSprite, RIVER_TYPE riverType, int amount, double speed) {
         super(pApplet, riverType, speed);
         this.riverType = riverType;
 
@@ -24,14 +25,20 @@ public class RiverLog extends River {
 
             }
             int xPosition = UTILS.generateVehicleXPosition(riverType.getWidth(), i, amount);
-            logs.add(new Log(pApplet, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition));
-            logs.add(new Log(pApplet, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition + CONSTANTS.PIXEL_HORIZONTAL));
+            logs.add(new Log(pApplet, logSprite, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition));
+            logs.add(new Log(pApplet, logSprite, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition + CONSTANTS.PIXEL_HORIZONTAL));
         }
 
 
     }
 
-    public boolean isFrogOnFloating(Hitbox frogHitbox) {
+    /**
+     * "Is Frog on Floating"
+     *
+     * @param frogHitbox Hitbox of active frog
+     * @return boolean
+     */
+    public boolean checkCollision(Hitbox frogHitbox) {
         for (Log log : logs) {
             if (UTILS.isColliding(frogHitbox, log.getHitboxAbsolute(riverType.getPositionY()))) {
                 return true;

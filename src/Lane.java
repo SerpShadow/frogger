@@ -25,7 +25,6 @@ public class Lane extends Floor {
     public boolean checkCollision(Hitbox frogHitbox) {
         for (Vehicle vehicle : vehicles) {
             if (UTILS.isColliding(frogHitbox, vehicle.getHitboxAbsolute(vehicleType.getPositionY()))) {
-                System.out.println("Collision found");
                 return true;
             }
         }

@@ -26,6 +26,7 @@ public class Floating extends Obstacle {
         return multiSprite;
     }
 
+    @Override
     protected void checkPosition() {
         if (getSpeed() > 0) {
             if (getPositionX() + getWidthInPixel() > CONSTANTS.PIXEL_HORIZONTAL * 2) {

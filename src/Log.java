@@ -10,13 +10,11 @@ public class Log extends Floating {
     private Hitbox hitbox = new Hitbox(0, -8, 0, 8);
 
 
-    public Log(PApplet pApplet, int width, double speed, int startPosition) {
+    public Log(PApplet pApplet, PImage logSprite,  int width, double speed, int startPosition) {
         super(pApplet, width, speed, startPosition);
         setHitboxRelativ(hitbox);
 
-        PImage logSprite = pApplet.loadImage("assets/log.png");
         getMultiSprite().addFrames(pApplet, logSprite, 0, 0, 3);
-
     }
 
     @Override

@@ -2,6 +2,7 @@ import General.CONSTANTS;
 import General.Hitbox;
 import General.UTILS;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class RiverTurtle extends River {
     private final RIVER_TYPE riverType;
 
 
-    public RiverTurtle(PApplet pApplet, RIVER_TYPE riverType, int amount, double speed) {
+    public RiverTurtle(PApplet pApplet, PImage turtleSprite, RIVER_TYPE riverType, int amount, double speed) {
         super(pApplet, riverType, speed);
         this.riverType = riverType;
 
@@ -26,7 +27,7 @@ public class RiverTurtle extends River {
 
     }
 
-    public boolean isFrogOnFloating(Hitbox frogHitbox) {
+    public boolean checkCollision(Hitbox frogHitbox) {
         for (Turtle turtle : turtles) {
             if (UTILS.isColliding(frogHitbox, turtle.getHitboxAbsolute(riverType.getPositionY()))) {
                 return true;

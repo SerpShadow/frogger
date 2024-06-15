@@ -12,7 +12,7 @@ public class Vehicle extends Obstacle {
     public Vehicle(PApplet pApplet, PImage spriteMap, VEHICLE_TYPE vehicleType, double speed, int startPosition) {
         super(vehicleType.getWidth(), speed, startPosition, new Hitbox(0, 0, 0, 0));
 
-        multiSprite = new MultiSprite(getWidthInPixel(), getHeight(), ANCHORTYPE.TOP_LEFT);
+        multiSprite = new MultiSprite(getWidthInPixel(), getHeightInPixel(), ANCHORTYPE.TOP_LEFT);
 
         switch (vehicleType) {
             case TRUCK:
@@ -50,6 +50,7 @@ public class Vehicle extends Obstacle {
         }
     }
 
+    @Override
     protected void checkPosition() {
         if (getSpeed() > 0) {
             if (getPositionX() > CONSTANTS.PIXEL_HORIZONTAL) {

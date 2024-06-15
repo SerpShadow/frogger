@@ -47,7 +47,6 @@ public class Home extends Floor {
     public boolean checkCollision(Hitbox frogHitbox) {
         for (HomeElement homeElement : homeElements) {
             if (UTILS.isColliding(frogHitbox, homeElement.getHitboxAbsolute(UTILS.chunksToPixel(2)))) {
-                System.out.println("Collision found");
                 homeElement.setOccupied(true);
                 return true;
             }

@@ -8,6 +8,7 @@ import SpriteLib.Point;
 import Text.Text;
 import Text.TEXT_COLOR;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public class GameController {
     private final Game game;
 
     private final Home home;
-    private final Grass medianStrip;
+    private Grass medianStrip;
     private final Grass startStrip;
     private final FrogManual frogManual;
 
@@ -37,12 +38,13 @@ public class GameController {
         this.game = game;
 
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
+        PImage snakeSprite = pApplet.loadImage("assets/snake.png");
 
         home = new Home(pApplet);
         generateRivers(pApplet);
-        medianStrip = new Grass(pApplet, spriteMap, UTILS.chunksToPixel(8));
+        medianStrip = new Grass(pApplet, spriteMap, snakeSprite, 8);
         generateVehicles(pApplet);
-        startStrip = new Grass(pApplet, spriteMap, UTILS.chunksToPixel(14));
+        startStrip = new Grass(pApplet, spriteMap, 14);
         frogManual = new FrogManual(pApplet);
         multiSprite.addFrames(pApplet, spriteMap, UTILS.chunksToPixel(13), 16, 14);
         timeText = new Text(pApplet, new Point(UTILS.chunksToPixel(12), CONSTANTS.CHUNK_SIZE_HALF), TEXT_COLOR.YELLOW, "Time");
@@ -50,17 +52,26 @@ public class GameController {
     }
 
     public void keyPressed(int keyCode, Game game) {
-        frogManual.keyPressed(keyCode, game);
+        if (keyCode == 75) {
+            UTILS.setCurrentLevel(0);
+            startNextLevel();
+        } else if (keyCode == 76) {
+            startNextLevel();
+        } else {
+            frogManual.keyPressed(keyCode, game);
+        }
     }
 
     private void generateRivers(PApplet pApplet) {
         LevelData levelData = UTILS.getCurrentLevelData();
+        PImage logSprite = pApplet.loadImage("assets/log.png");
+        PImage turtleSprite = pApplet.loadImage("assets/turtle.png");
         rivers = new River[5];
-        rivers[0] = new RiverLog(pApplet, RIVER_TYPE.FIRST, levelData.getRiverFirstAmount(), levelData.getRiverFirstSpeed());
-        rivers[1] = new RiverTurtle(pApplet, RIVER_TYPE.SECOND, levelData.getRiverSecondAmount(), levelData.getRiverSecondSpeed());
-        rivers[2] = new RiverLog(pApplet, RIVER_TYPE.THIRD, levelData.getRiverThirdAmount(), levelData.getRiverThirdSpeed());
-        rivers[3] = new RiverLog(pApplet, RIVER_TYPE.FOURTH, levelData.getRiverFourthAmount(), levelData.getRiverFourthSpeed());
-        rivers[4] = new RiverTurtle(pApplet, RIVER_TYPE.FIFTH, levelData.getRiverFifthAmount(), levelData.getRiverFifthSpeed());
+        rivers[0] = new RiverLog(pApplet, logSprite, RIVER_TYPE.FIRST, levelData.getRiverFirstAmount(), levelData.getRiverFirstSpeed());
+        rivers[1] = new RiverTurtle(pApplet, turtleSprite, RIVER_TYPE.SECOND, levelData.getRiverSecondAmount(), levelData.getRiverSecondSpeed());
+        rivers[2] = new RiverLog(pApplet, logSprite, RIVER_TYPE.THIRD, levelData.getRiverThirdAmount(), levelData.getRiverThirdSpeed());
+        rivers[3] = new RiverLog(pApplet, logSprite, RIVER_TYPE.FOURTH, levelData.getRiverFourthAmount(), levelData.getRiverFourthSpeed());
+        rivers[4] = new RiverTurtle(pApplet, turtleSprite, RIVER_TYPE.FIFTH, levelData.getRiverFifthAmount(), levelData.getRiverFifthSpeed());
     }
 
     private void generateVehicles(PApplet pApplet) {
@@ -92,8 +103,12 @@ public class GameController {
     }
 
     private void startNextLevel() {
+        game.increaseScoreBy(CONSTANTS.POINTS_PER_LEVEL);
+        game.increaseScoreBy(CONSTANTS.POINTS_PER_SECOND * (int) remainingSeconds);
+
         UTILS.increaseLevel();
         generateRivers(pApplet);
+        medianStrip.generateSnakes(pApplet);
         generateVehicles(pApplet);
 
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
@@ -110,8 +125,9 @@ public class GameController {
             int frogPositionY = frogManual.getPositionCurrent().getY();
 
             int homePositionY = 32;
-            if (homePositionY == frogPositionY) {
+            if (frogPositionY == homePositionY) {
                 if (home.checkCollision(frogHitbox)) {
+                    game.increaseScoreBy(CONSTANTS.POINTS_PER_FROG);
                     if (home.getAllHomesOccupied()) {
                         startNextLevel();
                     } else {
@@ -125,8 +141,8 @@ public class GameController {
 
             for (River river : rivers) {
                 int riverPositionY = river.getRiverType().getPositionY();
-                if (riverPositionY == frogPositionY) {
-                    if (river.isFrogOnFloating(frogHitbox)) {
+                if (frogPositionY == riverPositionY) {
+                    if (river.checkCollision(frogHitbox)) {
                         frogManual.increaseMovementXBy(river.getSpeed());
                     } else {
                         handleDeath();
@@ -134,7 +150,15 @@ public class GameController {
                 }
             }
 
-            if (frogPositionY < UTILS.chunksToPixel(8)) {
+//            System.out.println(medianStrip.checkCollision(frogHitbox));
+
+//            if (frogPositionY == UTILS.chunksToPixel(8)) {
+            if (medianStrip.checkCollision(frogHitbox)) {
+                handleDeath();
+            }
+//            }
+
+            if (frogPositionY > UTILS.chunksToPixel(8)) {
                 for (Lane lane : lanes) {
                     if (lane.checkCollision(frogHitbox)) {
                         handleDeath();

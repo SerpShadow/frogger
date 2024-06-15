@@ -6,10 +6,10 @@ import processing.core.PApplet;
 public abstract class Obstacle {
 
     private final int width;
-    private final int height = UTILS.chunksToPixel(1);
+    private final int height = 1;
 
     private final Point position = new Point();
-    private final double speed;
+    private double speed;
     private double movement = 0;
 
     private Hitbox hitboxRelativ;
@@ -37,8 +37,12 @@ public abstract class Obstacle {
         return UTILS.chunksToPixel(width);
     }
 
-    public int getHeight() {
+    public int getHeightInChunks() {
         return height;
+    }
+
+    public int getHeightInPixel() {
+        return UTILS.chunksToPixel(height);
     }
 
     public Point getPosition() {
@@ -61,6 +65,10 @@ public abstract class Obstacle {
         return speed;
     }
 
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
     public void setHitboxRelativ(Hitbox hitboxRelativ) {
         this.hitboxRelativ = hitboxRelativ;
     }
@@ -70,7 +78,7 @@ public abstract class Obstacle {
      * @return Hitbox
      */
     public Hitbox getHitboxAbsolute(int positionY) {
-        return new Hitbox(position.getY() + hitboxRelativ.getTop() + positionY, position.getX() + getWidthInPixel() + hitboxRelativ.getRight(), position.getY() + height + hitboxRelativ.getBottom() + positionY, position.getX() + hitboxRelativ.getLeft());
+        return new Hitbox(position.getY() + hitboxRelativ.getTop() + positionY, position.getX() + getWidthInPixel() + hitboxRelativ.getRight(), position.getY() + getHeightInPixel() + hitboxRelativ.getBottom() + positionY, position.getX() + hitboxRelativ.getLeft());
     }
 
     protected abstract void checkPosition();
