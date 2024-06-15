@@ -1,6 +1,7 @@
 package Text;
 
 import General.CONSTANTS;
+import General.UTILS;
 import SpriteLib.ANCHORTYPE;
 import SpriteLib.MultiSprite;
 import SpriteLib.Point;
@@ -9,8 +10,8 @@ import processing.core.PImage;
 
 public class Text {
 
-    private Point position;
-    private TEXT_COLOR textColor;
+    private final Point position;
+    private final TEXT_COLOR textColor;
 
     private String indexes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ- ©□";
 
@@ -25,11 +26,9 @@ public class Text {
 
         for (int i = 0; i < 4 * 6; i++) {
             for (int ii = 0; ii < 10; ii++) {
-                multiSprite.addFrames(pApplet, spriteMap, ii * 8 * 2, i * CONSTANTS.CHUNK_SIZE, 1);
+                multiSprite.addFrames(pApplet, spriteMap, ii * 8 * 2, UTILS.chunksToPixel(i), 1);
             }
         }
-
-
     }
 
     public Text(PApplet pApplet, Point position, TEXT_COLOR textColor, String string) {

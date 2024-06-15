@@ -5,6 +5,8 @@ import processing.core.PApplet;
 
 public class FrogAuto extends Frog {
 
+    private boolean isParked = true;
+
     public FrogAuto(PApplet pApplet, Point startPosition) {
         super(pApplet, 8, startPosition);
 
@@ -16,22 +18,29 @@ public class FrogAuto extends Frog {
     }
 
     public void goToPositionX(int newXPosition) {
-        if (newXPosition > getPositionAbsolute().getX()) {
-            startAnimationRight();
-        } else {
-            startAnimationLeft();
+        if (newXPosition != getPositionAbsolute().getX()) {
+            isParked = false;
+            if (newXPosition > getPositionAbsolute().getX()) {
+                startAnimationRight();
+            } else {
+                startAnimationLeft();
+            }
+            getPositionAbsolute().setX(newXPosition);
         }
-        getPositionAbsolute().setX(newXPosition);
     }
 
     public void goToPositionY(int newYPosition) {
-        if (newYPosition > getPositionAbsolute().getY()) {
-            startAnimationDown();
 
-        } else {
-            startAnimationUp();
+        if (newYPosition != getPositionAbsolute().getY()) {
+            isParked = false;
+            if (newYPosition > getPositionAbsolute().getY()) {
+                startAnimationDown();
+
+            } else {
+                startAnimationUp();
+            }
+            getPositionAbsolute().setY(newYPosition);
         }
-        getPositionAbsolute().setY(newYPosition);
     }
 
     private void startAnimationUp() {
@@ -54,8 +63,9 @@ public class FrogAuto extends Frog {
     public void draw(PApplet pApplet) {
         super.draw(pApplet);
 
-        if (!isMoving()) {
+        if (!isParked && !isMoving()) {
             getSequencedSprite().gotoSequence("up");
+            isParked = true;
         }
     }
 }

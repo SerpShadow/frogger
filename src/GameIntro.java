@@ -1,4 +1,5 @@
 import General.CONSTANTS;
+import General.UTILS;
 import SpriteLib.ANCHORTYPE;
 import SpriteLib.MultiSprite;
 import SpriteLib.Point;
@@ -81,9 +82,8 @@ public class GameIntro {
     }
 
     private void addNewFrog(int index) {
-        FrogAuto frogAuto;
-        frogAuto = new FrogAuto(pApplet, frogStartPosition);
-        frogAuto.goToPositionX(CONSTANTS.CHUNK_SIZE * 2 + (CONSTANTS.CHUNK_SIZE + CONSTANTS.CHUNK_SIZE_HALF) * index);
+        FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition);
+        frogAuto.goToPositionX(UTILS.chunksToPixel(2) + UTILS.chunksToPixel(1.5) * index);
         frogs.add(frogAuto);
     }
 

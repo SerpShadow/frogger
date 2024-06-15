@@ -16,46 +16,40 @@ public class Frog {
     private boolean dead = false;
 
 
-    private SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
-    private Point positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 13 * CONSTANTS.CHUNK_SIZE);
-    private Point positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 13 * CONSTANTS.CHUNK_SIZE);
+    private final SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
+    private Point positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
+    private Point positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
 
-    private int movementSpeed;
+    private final int movementSpeed;
+    private double movementX = 0;
 
     public Frog(PApplet pApplet, int movementSpeed) {
         this.movementSpeed = movementSpeed;
-        PImage frogSprite = pApplet.loadImage("assets/frog.png");
 
-        // Movement
+        // Movement Frames
+        PImage frogSprite = pApplet.loadImage("assets/frog.png");
         for (int i = 0; i < 12; i++) {
             sequencedSprite.addFrames(pApplet, frogSprite, 16 * i + 8 * i, 0, 1);
         }
 
-        // Death
-        sequencedSprite.addFrames(pApplet, frogSprite, 0, 16, 1);
+        // Death Frames
+        PImage frogDeathSprite = pApplet.loadImage("assets/frog-death.png");
+        sequencedSprite.addFrames(pApplet, frogDeathSprite, 0, 0, 1);
         for (int i = 0; i < 3; i++) {
-            sequencedSprite.addFrames(pApplet, frogSprite, 32 + 16 * i + 8 * i, 16, 1);
+            sequencedSprite.addFrames(pApplet, frogDeathSprite, 32 + 16 * i + 8 * i, 0, 1);
         }
         for (int i = 0; i < 4; i++) {
-            sequencedSprite.addFrames(pApplet, frogSprite, 112 + 16 * i + 8 * i, 16, 1);
+            sequencedSprite.addFrames(pApplet, frogDeathSprite, 112 + 16 * i + 8 * i, 0, 1);
         }
 
 
-        // Movement
-        sequencedSprite.addSequence(new Sequence("up", "up", 2));
-        sequencedSprite.addSequence(new Sequence("up-move", "up", 1, 0, 0, 1));
-        sequencedSprite.addSequence(new Sequence("left", "left", 5));
-        sequencedSprite.addSequence(new Sequence("left-move", "left", 4, 3, 3, 4));
-        sequencedSprite.addSequence(new Sequence("down", "down", 8));
-        sequencedSprite.addSequence(new Sequence("down-move", "down", 7, 6, 6, 7));
-        sequencedSprite.addSequence(new Sequence("right", "right", 9));
-        sequencedSprite.addSequence(new Sequence("right-move", "right", 10, 11, 11, 10));
-
-        // Death
+        // Death Sequences
         sequencedSprite.addSequence(new Sequence("dead", "dead", 19));
-        sequencedSprite.addSequence(new Sequence("death-land", "dead", 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12));
+        sequencedSprite.addSequence(new Sequence("death-water", "dead", 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12));
+        sequencedSprite.addSequence(new Sequence("death-land", "dead", 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12));
 
 
+        sequencedSprite.addSequence(new Sequence("up", "up", 2));
         sequencedSprite.gotoSequence("up");
     }
 
@@ -63,6 +57,14 @@ public class Frog {
         this(pApplet, movementSpeed);
         positionCurrent = new Point(startPosition.getX(), startPosition.getY());
         positionAbsolute = new Point(startPosition.getX(), startPosition.getY());
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public SequencedSprite getSequencedSprite() {
@@ -89,6 +91,14 @@ public class Frog {
         positionAbsolute.setX(positionX);
     }
 
+    public void setPositionAbsoluteY(int positionY) {
+        positionAbsolute.setY(positionY);
+    }
+
+    public void increaseMovementXBy(double amount) {
+        movementX += amount;
+    }
+
     public boolean isDead() {
         return dead;
     }
@@ -101,57 +111,12 @@ public class Frog {
         return new Hitbox(positionCurrent.getY() + 2, positionCurrent.getX() + width - 2, positionCurrent.getY() + height - 2, positionCurrent.getX() + 2);
     }
 
-    public void keyPressed(int keyCode, Game game) {
-        if (dead || positionAbsolute.getX() != positionCurrent.getX() || positionAbsolute.getY() != positionCurrent.getY()) {
-            return;
-        }
-
-        switch (keyCode) {
-            case PConstants.UP:
-                goUp();
-                game.increaseScoreBy(CONSTANTS.POINTS_PER_STEP);
-                break;
-            case PConstants.LEFT:
-                goLeft();
-                break;
-            case PConstants.DOWN:
-                goDown();
-                break;
-            case PConstants.RIGHT:
-                goRight();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void goUp() {
-        sequencedSprite.gotoSequence("up-move");
-        positionAbsolute.setY(positionAbsolute.getY() - height);
-    }
-
-    public void goLeft() {
-        sequencedSprite.gotoSequence("left-move");
-        positionAbsolute.setX(positionAbsolute.getX() - width);
-    }
-
-    public void goDown() {
-        sequencedSprite.gotoSequence("down-move");
-        positionAbsolute.setY(positionAbsolute.getY() + height);
-    }
-
-    public void goRight() {
-        sequencedSprite.gotoSequence("right-move");
-        positionAbsolute.setX(positionAbsolute.getX() + width);
-    }
-
-
     public void onDeath() {
         if (dead) return;
         dead = true;
         sequencedSprite.gotoSequence("death-land");
 
-        CompletableFuture.delayedExecutor(2, TimeUnit.SECONDS).execute(() -> {
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             dead = false;
             positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
             positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
@@ -161,6 +126,13 @@ public class Frog {
     }
 
     public void draw(PApplet pApplet) {
+
+        if (Math.abs(movementX) >= 1) {
+            positionCurrent.setX(positionCurrent.getX() + (int) movementX);
+            positionAbsolute.setX(positionAbsolute.getX() + (int) movementX);
+            movementX = 0;
+        }
+
         if (positionAbsolute.getX() < positionCurrent.getX()) {
             positionCurrent.setX(positionCurrent.getX() - movementSpeed);
         }

@@ -12,7 +12,7 @@ public interface CONSTANTS {
     int POINTS_PER_FROG = 50;
     int POINTS_PER_LEVEL = 1000;
     int POINTS_PER_SECOND = 10;
-    int RESPAWN_DELAY = 2; // sec
+    int RESPAWN_DELAY = 2000; // milisec
     LevelData[] LEVEL_LIST = new LevelData[]{
             new LevelData(
                     3,

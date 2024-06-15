@@ -7,6 +7,8 @@ import processing.core.PImage;
 
 public class Game {
 
+    private final PApplet pApplet;
+
     private GAME_STAGE gameStage = GAME_STAGE.MAIN;
 
     private SplashScreen splashScreen;
@@ -14,15 +16,16 @@ public class Game {
     private ScoreRanking scoreRanking;
     private GameController gameController;
 
-    private Text titleScore;
-    private Text titleHiScore;
-    private Text displayScore;
-    private Text displayHiScore;
+    private final Text titleScore;
+    private final Text titleHiScore;
+    private final Text displayScore;
+    private final Text displayHiScore;
 
     private int score = 0;
 
 
     public Game(PApplet pApplet) {
+        this.pApplet = pApplet;
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
 
         // three stages of game
@@ -42,18 +45,27 @@ public class Game {
 
     }
 
+    public void setGameStage(GAME_STAGE gameStage) {
+        switch (gameStage) {
+            case SPLASH_SCREEN -> splashScreen = new SplashScreen(pApplet);
+            case GAME_INTRO -> gameIntro = new GameIntro(pApplet);
+            case MAIN -> gameController = new GameController(pApplet, this);
+            case SCORE_RANKING -> scoreRanking = new ScoreRanking(pApplet);
+        }
+        this.gameStage = gameStage;
+    }
+
     public void keyPressed(int keyCode) {
-//        System.out.println("keyPressed: " + keyCode);
-//        System.out.println(keyCode);
         if (gameStage == GAME_STAGE.GAME_INTRO) {
             if (gameIntro.getGameIntroStage() == GAME_INTRO_STAGE.SCORE_RANKING) {
                 if (keyCode == PConstants.BEVEL) {
-                    gameStage = GAME_STAGE.MAIN;
+                    setGameStage(GAME_STAGE.MAIN);
                 }
             }
         } else if (gameStage == GAME_STAGE.SCORE_RANKING) {
-            // todo: handle space-bar
-
+            if (keyCode == PConstants.BEVEL) {
+                setGameStage(GAME_STAGE.MAIN);
+            }
         } else {
             gameController.keyPressed(keyCode, this);
         }
@@ -73,17 +85,13 @@ public class Game {
         displayScore.draw(pApplet);
     }
 
-    public void drawLives() {
-
-    }
-
     public void draw(PApplet pApplet) {
 
         switch (gameStage) {
             case SPLASH_SCREEN:
                 splashScreen.draw(pApplet);
                 if (splashScreen.isFinished()) {
-                    gameStage = GAME_STAGE.GAME_INTRO;
+                    setGameStage(GAME_STAGE.GAME_INTRO);
                 }
                 break;
             case GAME_INTRO:

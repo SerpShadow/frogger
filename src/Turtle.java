@@ -1,5 +1,6 @@
 import General.CONSTANTS;
 import General.Hitbox;
+import General.UTILS;
 import SpriteLib.Point;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -25,7 +26,7 @@ public class Turtle extends Floating {
         int counter = (pApplet.millis() / 500) % 3;
 
         for (int i = 0; i < getWidthInChunks(); i++) {
-            int positionX = getPositionX() + i * CONSTANTS.CHUNK_SIZE;
+            int positionX = getPositionX() + UTILS.chunksToPixel(i);
             Point drawPosition = new Point(positionX, getPositionY());
             getMultiSprite().setFrame(counter);
             getMultiSprite().draw(pApplet, drawPosition);

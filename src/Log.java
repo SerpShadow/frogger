@@ -1,5 +1,6 @@
 import General.CONSTANTS;
 import General.Hitbox;
+import General.UTILS;
 import SpriteLib.Point;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -23,7 +24,7 @@ public class Log extends Floating {
         super.draw(pApplet);
 
         for (int i = 0; i < getWidthInChunks(); i++) {
-            int positionX = getPositionX() + i * CONSTANTS.CHUNK_SIZE;
+            int positionX = getPositionX() + UTILS.chunksToPixel(i);
             Point drawPosition = new Point(positionX, getPositionY());
             if (i == 0) {
                 getMultiSprite().setFrame(0);
