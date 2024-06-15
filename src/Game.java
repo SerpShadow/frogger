@@ -7,28 +7,26 @@ import processing.core.PImage;
 
 public class Game {
 
-    GAME_STAGE gameStage = GAME_STAGE.MAIN;
+    private GAME_STAGE gameStage = GAME_STAGE.MAIN;
 
-    GameIntro gameIntro;
-    ScoreRanking scoreRanking;
-    GameController gameController;
+    private SplashScreen splashScreen;
+    private GameIntro gameIntro;
+    private ScoreRanking scoreRanking;
+    private GameController gameController;
 
-    Text titleScore;
-    Text titleHiScore;
-    Text displayScore;
-    Text displayHiScore;
+    private Text titleScore;
+    private Text titleHiScore;
+    private Text displayScore;
+    private Text displayHiScore;
 
-    int score = 0;
-    int level = 1;
-    int lives = 7;
-
-    long endTime = System.currentTimeMillis() + 60 * 1000;
+    private int score = 0;
 
 
     public Game(PApplet pApplet) {
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
 
         // three stages of game
+        splashScreen = new SplashScreen(pApplet);
         gameIntro = new GameIntro(pApplet);
         gameController = new GameController(pApplet, this);
         scoreRanking = new ScoreRanking(pApplet);
@@ -67,21 +65,12 @@ public class Game {
         displayScore.setString(("00000" + stringScore).substring(stringScore.length()));
     }
 
-    public void restartTimer() {
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        endTime = System.currentTimeMillis() + 60 * 1000;
-                    }
-                },
-                CONSTANTS.RESPAWN_DELAY * 1000
-        );
-    }
 
-    public void onDeath() {
-        lives -= 1;
-        restartTimer();
+
+    private void drawHeader(PApplet pApplet) {
+        titleScore.draw(pApplet);
+        titleHiScore.draw(pApplet);
+        displayScore.draw(pApplet);
     }
 
     public void drawLives() {
@@ -89,21 +78,24 @@ public class Game {
     }
 
     public void draw(PApplet pApplet) {
-        long remainingTime = endTime - System.currentTimeMillis();
-        long remainingSeconds = remainingTime / 1000;
-//        System.out.println("TIME:" + remainingSeconds);
-        titleScore.draw(pApplet);
-        titleHiScore.draw(pApplet);
-        displayScore.draw(pApplet);
 
         switch (gameStage) {
+            case SPLASH_SCREEN:
+                splashScreen.draw(pApplet);
+                if (splashScreen.isFinished()) {
+                    gameStage = GAME_STAGE.GAME_INTRO;
+                }
+                break;
             case GAME_INTRO:
+                drawHeader(pApplet);
                 gameIntro.draw(pApplet);
                 break;
             case MAIN:
+                drawHeader(pApplet);
                 gameController.draw(pApplet);
                 break;
             case SCORE_RANKING:
+                drawHeader(pApplet);
                 scoreRanking.draw(pApplet);
                 break;
         }

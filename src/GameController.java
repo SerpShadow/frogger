@@ -20,6 +20,9 @@ public class GameController {
     private River[] rivers = new River[5];
     private Lane[] lanes = new Lane[5];
 
+    private int lives = 7;
+    private long endTime = System.currentTimeMillis() + 60 * 1000;
+
 //    private ArrayList<Log> logs = new ArrayList();
 
     public GameController(PApplet pApplet, Game game) {
@@ -59,9 +62,22 @@ public class GameController {
         lanes[4] = new LaneDuneBuggy(pApplet);
     }
 
+    private void restartTimer() {
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        endTime = System.currentTimeMillis() + 60 * 1000;
+                    }
+                },
+                CONSTANTS.RESPAWN_DELAY * 1000
+        );
+    }
+
     private void handleDeath() {
         frog.onDeath();
-        game.onDeath();
+        lives -= 1;
+        restartTimer();
     }
 
     private void checkCollision() {
@@ -96,6 +112,12 @@ public class GameController {
     }
 
     public void draw(PApplet pApplet) {
+        long remainingTime = endTime - System.currentTimeMillis();
+        long remainingSeconds = remainingTime / 1000;
+//        System.out.println("TIME:" + remainingSeconds);
+
+
+//        rivers.forEach(river -> river.draw(pApplet));
         for (River river : rivers) {
             river.draw(pApplet);
         }

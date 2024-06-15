@@ -10,11 +10,6 @@ public class Main extends PApplet {
     private int nextAnimAt = 0;
 
     private Game game;
-    private SplashScreen splashScreen;
-
-//    private ArrayList<ArrayList> arrayList = new ArrayList<>(){
-//        new ArrayList<>();
-//    };
 
     /**
      * Statische main-Funktion als erste Methode beim Programmstart
@@ -43,7 +38,7 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         PImage spriteMap = loadImage("assets/frogger-sprite.png");
-        splashScreen = new SplashScreen(this);
+        game = new Game(this);
     }
 
     @Override
@@ -55,10 +50,6 @@ public class Main extends PApplet {
 //        if (key == CODED) {
         if (game != null) game.keyPressed(keyCode);
 //        }
-    }
-
-    public void initializeGame() {
-        if (game == null) game = new Game(this);
     }
 
     /**
@@ -77,13 +68,8 @@ public class Main extends PApplet {
         pushMatrix();
         translate(0, 0);
         fill(0, 0, 71);
-        rect(0, 0, CONSTANTS.PIXEL_HORIZONTAL, (int) (7.5 * CONSTANTS.CHUNK_SIZE) + 8);
+        rect(0, 0, CONSTANTS.PIXEL_HORIZONTAL, (int) (CONSTANTS.PIXEL_VERTICAL / 2));
         popMatrix();
-
-        if (splashScreen != null) {
-            splashScreen.draw(this);
-            if (splashScreen.isFinished()) initializeGame();
-        }
 
         if (game != null) game.draw(this);
     }
