@@ -17,8 +17,8 @@ public class GameController {
     private Frog frog;
 
     private boolean[] homesOccupied = new boolean[5];
-    private ArrayList<River> rivers = new ArrayList();
-    private ArrayList<Lane> lanes = new ArrayList(); // todo: switch to array
+    private River[] rivers = new River[5];
+    private Lane[] lanes = new Lane[5];
 
 //    private ArrayList<Log> logs = new ArrayList();
 
@@ -30,7 +30,7 @@ public class GameController {
         home = new Home(pApplet, spriteMap);
         generateRivers(pApplet);
         medianStrip = new Grass(pApplet, spriteMap, 8 * CONSTANTS.CHUNK_SIZE);
-//        generateVehicles(pApplet);
+        generateVehicles(pApplet);
         startStrip = new Grass(pApplet, spriteMap, 14 * CONSTANTS.CHUNK_SIZE);
 
         frog = new Frog(pApplet, CONSTANTS.SPEED_FROG);
@@ -42,21 +42,21 @@ public class GameController {
 
     private void generateRivers(PApplet pApplet) {
         LevelData levelData = UTILS.getCurrentLevelData();
-        rivers = new ArrayList<>();
-        rivers.add(new RiverLog(pApplet, RIVER_TYPE.FIRST, levelData.getRiverFirstAmount(), levelData.getRiverFirstSpeed()));
-        rivers.add(new RiverTurtle(pApplet, RIVER_TYPE.SECOND, levelData.getRiverSecondAmount(), levelData.getRiverSecondSpeed()));
-        rivers.add(new RiverLog(pApplet, RIVER_TYPE.THIRD, levelData.getRiverThirdAmount(), levelData.getRiverThirdSpeed()));
-        rivers.add(new RiverLog(pApplet, RIVER_TYPE.FOURTH, levelData.getRiverFourthAmount(), levelData.getRiverFourthSpeed()));
-        rivers.add(new RiverTurtle(pApplet, RIVER_TYPE.FIFTH, levelData.getRiverFifthAmount(), levelData.getRiverFifthSpeed()));
+        rivers = new River[5];
+        rivers[0]=new RiverLog(pApplet, RIVER_TYPE.FIRST, levelData.getRiverFirstAmount(), levelData.getRiverFirstSpeed());
+        rivers[1]=new RiverTurtle(pApplet, RIVER_TYPE.SECOND, levelData.getRiverSecondAmount(), levelData.getRiverSecondSpeed());
+        rivers[2]=new RiverLog(pApplet, RIVER_TYPE.THIRD, levelData.getRiverThirdAmount(), levelData.getRiverThirdSpeed());
+        rivers[3]=new RiverLog(pApplet, RIVER_TYPE.FOURTH, levelData.getRiverFourthAmount(), levelData.getRiverFourthSpeed());
+        rivers[4]=new RiverTurtle(pApplet, RIVER_TYPE.FIFTH, levelData.getRiverFifthAmount(), levelData.getRiverFifthSpeed());
     }
 
     private void generateVehicles(PApplet pApplet) {
-        lanes = new ArrayList<>();
-        lanes.add(new LaneTruck(pApplet));
-        lanes.add(new LaneRaceCar(pApplet));
-        lanes.add(new LaneCoupe(pApplet));
-        lanes.add(new LaneBulldozer(pApplet));
-        lanes.add(new LaneDuneBuggy(pApplet));
+        lanes = new Lane[5];
+        lanes[0] = new LaneTruck(pApplet);
+        lanes[1] = new LaneRaceCar(pApplet);
+        lanes[2] = new LaneCoupe(pApplet);
+        lanes[3] = new LaneBulldozer(pApplet);
+        lanes[4] = new LaneDuneBuggy(pApplet);
     }
 
     private void handleDeath() {
@@ -96,10 +96,9 @@ public class GameController {
     }
 
     public void draw(PApplet pApplet) {
-        rivers.forEach(river -> river.draw(pApplet));
-//        for (River river : rivers) {
-//            river.draw(pApplet);
-//        }
+        for (River river : rivers) {
+            river.draw(pApplet);
+        }
         for (Lane lane : lanes) {
             lane.draw(pApplet);
         }
