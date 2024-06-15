@@ -15,14 +15,14 @@ import java.util.concurrent.TimeUnit;
 
 public class GameController {
 
-    private Game game;
+    private final PApplet pApplet;
+    private final Game game;
 
-    private Home home;
-    private Grass medianStrip;
-    private Grass startStrip;
-    private FrogManual frog;
+    private final Home home;
+    private final Grass medianStrip;
+    private final Grass startStrip;
+    private final FrogManual frogManual;
 
-    private boolean[] homesOccupied = new boolean[5];
     private River[] rivers = new River[5];
     private Lane[] lanes = new Lane[5];
 
@@ -32,26 +32,25 @@ public class GameController {
     private long remainingSeconds;
     private long endTime = System.currentTimeMillis() + 60 * 1000;
 
-//    private ArrayList<Log> logs = new ArrayList();
-
     public GameController(PApplet pApplet, Game game) {
+        this.pApplet = pApplet;
         this.game = game;
 
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
 
-        home = new Home(pApplet, spriteMap);
+        home = new Home(pApplet);
         generateRivers(pApplet);
         medianStrip = new Grass(pApplet, spriteMap, UTILS.chunksToPixel(8));
         generateVehicles(pApplet);
         startStrip = new Grass(pApplet, spriteMap, UTILS.chunksToPixel(14));
-        frog = new FrogManual(pApplet);
+        frogManual = new FrogManual(pApplet);
         multiSprite.addFrames(pApplet, spriteMap, UTILS.chunksToPixel(13), 16, 14);
         timeText = new Text(pApplet, new Point(UTILS.chunksToPixel(12), CONSTANTS.CHUNK_SIZE_HALF), TEXT_COLOR.YELLOW, "Time");
 
     }
 
     public void keyPressed(int keyCode, Game game) {
-        frog.keyPressed(keyCode, game);
+        frogManual.keyPressed(keyCode, game);
     }
 
     private void generateRivers(PApplet pApplet) {
@@ -65,12 +64,14 @@ public class GameController {
     }
 
     private void generateVehicles(PApplet pApplet) {
+        LevelData levelData = UTILS.getCurrentLevelData();
         lanes = new Lane[5];
-        lanes[0] = new LaneTruck(pApplet);
-        lanes[1] = new LaneRaceCar(pApplet);
-        lanes[2] = new LaneCoupe(pApplet);
-        lanes[3] = new LaneBulldozer(pApplet);
-        lanes[4] = new LaneDuneBuggy(pApplet);
+        lanes[0] = new Lane(pApplet, VEHICLE_TYPE.TRUCK, levelData.getVehicleTruckAmount(), levelData.getVehicleTruckSpeed());
+        lanes[1] = new Lane(pApplet, VEHICLE_TYPE.RACE_CAR, levelData.getVehicleRaceCarAmount(), levelData.getVehicleRaceCarSpeed());
+        lanes[2] = new Lane(pApplet, VEHICLE_TYPE.COUPE, levelData.getVehicleCoupeAmount(), levelData.getVehicleCoupeSpeed());
+        lanes[3] = new Lane(pApplet, VEHICLE_TYPE.BULLDOZER, levelData.getVehicleBulldozerAmount(), levelData.getVehicleBulldozerSpeed());
+        lanes[4] = new Lane(pApplet, VEHICLE_TYPE.DUNE_BUGGY, levelData.getVehicleDuneBuggyAmount(), levelData.getVehicleDuneBuggySpeed());
+
     }
 
     private void restartTimer() {
@@ -80,7 +81,7 @@ public class GameController {
     }
 
     private void handleDeath() {
-        frog.onDeath();
+        frogManual.onDeath();
         lives -= 1;
 
         if (lives < 1) {
@@ -90,26 +91,59 @@ public class GameController {
         }
     }
 
-    private void checkCollision() {
-        if (!frog.isDead()) {
-            Hitbox frogHitbox = frog.getHitbox();
+    private void startNextLevel() {
+        UTILS.increaseLevel();
+        generateRivers(pApplet);
+        generateVehicles(pApplet);
 
-            for (Lane lane : lanes) {
-                if (lane.checkCollision(frogHitbox)) {
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
+            home.resetOccupiedHomes();
+        });
+
+
+        frogManual.onRestart();
+    }
+
+    private void checkCollision() {
+        if (!frogManual.isDead()) {
+            Hitbox frogHitbox = frogManual.getHitbox();
+            int frogPositionY = frogManual.getPositionCurrent().getY();
+
+            int homePositionY = 32;
+            if (homePositionY == frogPositionY) {
+                if (home.checkCollision(frogHitbox)) {
+                    if (home.getAllHomesOccupied()) {
+                        startNextLevel();
+                    } else {
+                        frogManual.onRestart();
+                    }
+                } else {
                     handleDeath();
                 }
             }
 
+
             for (River river : rivers) {
-                int frogPositionY = frog.getPositionCurrent().getY();
                 int riverPositionY = river.getRiverType().getPositionY();
                 if (riverPositionY == frogPositionY) {
                     if (river.isFrogOnFloating(frogHitbox)) {
-                        frog.increaseMovementXBy(river.getSpeed());
+                        frogManual.increaseMovementXBy(river.getSpeed());
                     } else {
                         handleDeath();
                     }
                 }
+            }
+
+            if (frogPositionY < UTILS.chunksToPixel(8)) {
+                for (Lane lane : lanes) {
+                    if (lane.checkCollision(frogHitbox)) {
+                        handleDeath();
+                    }
+                }
+            }
+
+            if (!UTILS.isColliding(frogHitbox, new Hitbox(0, CONSTANTS.PIXEL_HORIZONTAL, CONSTANTS.PIXEL_VERTICAL, 0))) {
+                handleDeath();
             }
         }
     }
@@ -141,7 +175,7 @@ public class GameController {
             multiSprite.draw(pApplet, new Point(CONSTANTS.PIXEL_HORIZONTAL - CONSTANTS.CHUNK_SIZE - i * CONSTANTS.CHUNK_SIZE_HALF, 0));
         }
 
-        if (!frog.isDead()) {
+        if (!frogManual.isDead()) {
             calcRemainingTime();
 
             if (remainingSeconds == 0) {
@@ -165,7 +199,7 @@ public class GameController {
         pApplet.popMatrix();
         // Footer - END
 
-        frog.draw(pApplet);
+        frogManual.draw(pApplet);
 
         checkCollision();
     }

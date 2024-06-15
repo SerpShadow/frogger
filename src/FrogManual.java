@@ -1,11 +1,11 @@
 import General.CONSTANTS;
+import General.UTILS;
 import SpriteLib.Sequence;
 import SpriteLib.SequencedSprite;
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PImage;
 
-public class FrogManual extends Frog{
+public class FrogManual extends Frog {
     public FrogManual(PApplet pApplet) {
         super(pApplet, CONSTANTS.SPEED_FROG);
 
@@ -23,7 +23,7 @@ public class FrogManual extends Frog{
     }
 
     public void keyPressed(int keyCode, Game game) {
-        if (isDead() || getPositionAbsolute().getX() != getPositionCurrent().getX() || getPositionAbsolute().getY() != getPositionCurrent().getY()) {
+        if (isInputBlocked() || isDead() || getPositionAbsolute().getX() != getPositionCurrent().getX() || getPositionAbsolute().getY() != getPositionCurrent().getY()) {
             return;
         }
 
@@ -36,7 +36,9 @@ public class FrogManual extends Frog{
                 goLeft();
                 break;
             case PConstants.DOWN:
-                goDown();
+                if (getPositionAbsolute().getY() < UTILS.chunksToPixel(14)) {
+                    goDown();
+                }
                 break;
             case PConstants.RIGHT:
                 goRight();

@@ -5,17 +5,16 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
-public abstract class Lane {
+public class Lane extends Floor {
 
-    private final PApplet pApplet;
+    private final VEHICLE_TYPE vehicleType;
+
     private final ArrayList<Vehicle> vehicles = new ArrayList<>();
 
 
-    public Lane(PApplet pApplet) {
-        this.pApplet = pApplet;
-    }
+    public Lane(PApplet pApplet, VEHICLE_TYPE vehicleType, int amount, double speed) {
+        this.vehicleType = vehicleType;
 
-    protected void generateVehicles(VEHICLE_TYPE vehicleType, int amount, int speed) {
         PImage vehiclesSprite = pApplet.loadImage("assets/vehicles.png");
         for (int i = 0; i < amount; i++) {
             Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, speed, UTILS.generateVehicleXPosition(UTILS.chunksToPixel(vehicleType.getWidth()), i, amount));
@@ -23,11 +22,9 @@ public abstract class Lane {
         }
     }
 
-    public abstract boolean checkCollision(Hitbox hitbox);
-
-    public boolean checkCollision(Hitbox frogHitbox, int positionY) {
+    public boolean checkCollision(Hitbox frogHitbox) {
         for (Vehicle vehicle : vehicles) {
-            if (UTILS.isColliding(frogHitbox, vehicle.getHitboxAbsolute(positionY))) {
+            if (UTILS.isColliding(frogHitbox, vehicle.getHitboxAbsolute(vehicleType.getPositionY()))) {
                 System.out.println("Collision found");
                 return true;
             }
@@ -37,8 +34,11 @@ public abstract class Lane {
 
 
     public void draw(PApplet pApplet) {
+        pApplet.pushMatrix();
+        pApplet.translate(0, vehicleType.getPositionY());
         for (Vehicle vehicle : vehicles) {
             vehicle.draw(pApplet);
         }
+        pApplet.popMatrix();
     }
 }

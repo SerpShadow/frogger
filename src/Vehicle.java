@@ -9,7 +9,7 @@ public class Vehicle extends Obstacle {
 
     private final MultiSprite multiSprite;
 
-    public Vehicle(PApplet pApplet, PImage spriteMap, VEHICLE_TYPE vehicleType, int speed, int startPosition) {
+    public Vehicle(PApplet pApplet, PImage spriteMap, VEHICLE_TYPE vehicleType, double speed, int startPosition) {
         super(vehicleType.getWidth(), speed, startPosition, new Hitbox(0, 0, 0, 0));
 
         multiSprite = new MultiSprite(getWidthInPixel(), getHeight(), ANCHORTYPE.TOP_LEFT);

@@ -18,7 +18,7 @@ public interface CONSTANTS {
                     3,
                     1,
 
-                    4,
+                    5,
                     -1,
 
                     2,
@@ -37,7 +37,7 @@ public interface CONSTANTS {
                     -1,
 
                     1,
-                    1,
+                    0.75,
 
                     3,
                     -0.5,
@@ -46,6 +46,39 @@ public interface CONSTANTS {
                     0.5,
 
                     3,
+                    -0.5),
+            new LevelData(
+                    3,
+                    1,
+
+                    4,
+                    -1,
+
+                    1,
+                    2,
+
+                    3,
+                    0.5,
+
+                    3,
+                    -1,
+
+                    0,
+                    0,
+
+                    3,
+                    -1,
+
+                    2,
+                    1,
+
+                    4,
+                    -0.5,
+
+                    3,
+                    0.5,
+
+                    4,
                     -0.5)
     };
 }

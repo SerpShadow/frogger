@@ -1,7 +1,7 @@
 import General.CONSTANTS;
 import General.Hitbox;
+import General.UTILS;
 import SpriteLib.*;
-import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PApplet;
 
@@ -14,6 +14,7 @@ public class Frog {
     private final int width = CONSTANTS.CHUNK_SIZE;
     private final int height = CONSTANTS.CHUNK_SIZE;
     private boolean dead = false;
+    private boolean inputBlocked = false;
 
 
     private final SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
@@ -67,6 +68,10 @@ public class Frog {
         return height;
     }
 
+    public boolean isInputBlocked() {
+        return inputBlocked;
+    }
+
     public SequencedSprite getSequencedSprite() {
         return sequencedSprite;
     }
@@ -114,7 +119,11 @@ public class Frog {
     public void onDeath() {
         if (dead) return;
         dead = true;
-        sequencedSprite.gotoSequence("death-land");
+        if (UTILS.pixelToChunks(positionCurrent.getY()) < CONSTANTS.CHUNKS_VERTICAL / 2) {
+            sequencedSprite.gotoSequence("death-water");
+        } else {
+            sequencedSprite.gotoSequence("death-land");
+        }
 
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             dead = false;
@@ -122,6 +131,19 @@ public class Frog {
             positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
             sequencedSprite.gotoSequence("up");
 
+        });
+    }
+
+    public void onRestart() {
+        inputBlocked = true;
+        sequencedSprite.gotoSequence("dead");
+
+        positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
+        positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
+
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
+            inputBlocked = false;
+            sequencedSprite.gotoSequence("up");
         });
     }
 

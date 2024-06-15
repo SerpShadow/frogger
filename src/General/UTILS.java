@@ -41,6 +41,7 @@ public class UTILS {
     }
 
     public static LevelData getCurrentLevelData() {
+        if (currentLevel > 5) return CONSTANTS.LEVEL_LIST[4]; // level 5 is max
         return CONSTANTS.LEVEL_LIST[currentLevel - 1];
     }
 
