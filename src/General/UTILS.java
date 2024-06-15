@@ -5,8 +5,8 @@ import java.util.Random;
 public class UTILS {
     public static int generateVehicleXPosition(int width, int index, int totalAmount) {
         Random rand = new Random();
-        int min = CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE / totalAmount * index;
-        int max = CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE / totalAmount * (index + 1) - width;
+        int min = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * index;
+        int max = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * (index + 1) - width;
         return rand.nextInt(max - min) + min;
     }
 
@@ -22,13 +22,25 @@ public class UTILS {
         return (int) (chunks * CONSTANTS.CHUNK_SIZE);
     }
 
-    private int currentLevel = 1;
-
-    public void increaseLevel() {
-        this.currentLevel += 1;
+    public static int pixelToChunks(double pixel) {
+        return (int) (pixel / CONSTANTS.CHUNK_SIZE);
     }
 
-    public LevelData getCurrentLevelData() {
+    public static boolean randomBoolean(double probability){
+        return Math.random() < probability;
+    }
+
+    private static int currentLevel = 1;
+
+    public static void increaseLevel() {
+        UTILS.currentLevel += 1;
+    }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public static LevelData getCurrentLevelData() {
         return CONSTANTS.LEVEL_LIST[currentLevel - 1];
     }
 

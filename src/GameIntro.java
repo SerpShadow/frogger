@@ -16,7 +16,7 @@ public class GameIntro {
     private int counter = 0;
 
     private ArrayList<FrogAuto> frogs = new ArrayList<>();
-    private Point frogStartPosition = new Point(CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE, (int) (7.5 * CONSTANTS.CHUNK_SIZE));
+    private Point frogStartPosition = new Point(CONSTANTS.PIXEL_HORIZONTAL, (int) (7.5 * CONSTANTS.CHUNK_SIZE));
 
     private MultiSprite multiSprite = new MultiSprite(24, (int) ((int) CONSTANTS.CHUNK_SIZE * 1.5), ANCHORTYPE.TOP_LEFT);
 
@@ -28,7 +28,7 @@ public class GameIntro {
     public GameIntro(PApplet pApplet) {
         this.pApplet = pApplet;
 
-        System.out.println(CONSTANTS.CHUNKS_VERTICALLY / 2);
+        System.out.println(CONSTANTS.CHUNKS_VERTICAL / 2);
 
         // Sprite for title
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");

@@ -13,14 +13,14 @@ public class LaneCoupe extends Lane {
         generateVehicles(VEHICLE_TYPE.COUPE, amount, speed);
     }
 
-    public boolean checkCollision(Hitbox froggerHitbox) {
-        return checkCollision(froggerHitbox, 10);
+    public boolean checkCollision(Hitbox frogHitbox) {
+        return checkCollision(frogHitbox, VEHICLE_TYPE.COUPE.getPositionY());
     }
 
     @Override
     public void draw(PApplet pApplet) {
         pApplet.pushMatrix();
-        pApplet.translate(0, UTILS.chunksToPixel(10));
+        pApplet.translate(0, VEHICLE_TYPE.COUPE.getPositionY());
         super.draw(pApplet);
         pApplet.popMatrix();
     }

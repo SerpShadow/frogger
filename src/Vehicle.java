@@ -7,13 +7,12 @@ import processing.core.PImage;
 
 public class Vehicle extends Obstacle {
 
-    private MultiSprite multiSprite;
+    private final MultiSprite multiSprite;
 
     public Vehicle(PApplet pApplet, PImage spriteMap, VEHICLE_TYPE vehicleType, int speed, int startPosition) {
-        super(vehicleType.getWidth(), speed, new Hitbox(0, 0, 0, 0));
+        super(vehicleType.getWidth(), speed, startPosition, new Hitbox(0, 0, 0, 0));
 
-        setPositionX(startPosition);
-        multiSprite = new MultiSprite(getWidth(), getHeight(), ANCHORTYPE.TOP_LEFT);
+        multiSprite = new MultiSprite(getWidthInPixel(), getHeight(), ANCHORTYPE.TOP_LEFT);
 
         switch (vehicleType) {
             case TRUCK:
@@ -45,9 +44,21 @@ public class Vehicle extends Obstacle {
 
     void resetPosition() {
         if (getSpeed() > 0) {
-            setPositionX(-getWidth());
+            setPositionX(-getWidthInPixel());
         } else {
             setPositionX(14 * CONSTANTS.CHUNK_SIZE);
+        }
+    }
+
+    protected void checkPosition() {
+        if (getSpeed() > 0) {
+            if (getPositionX() > CONSTANTS.PIXEL_HORIZONTAL) {
+                setPositionX(-getWidthInPixel()); // move object to the left but -width to render outside the screen
+            }
+        } else {
+            if (getPositionX() < -getWidthInPixel()) {
+                setPositionX(CONSTANTS.PIXEL_HORIZONTAL); // move object to the right
+            }
         }
     }
 

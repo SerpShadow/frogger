@@ -1,28 +1,40 @@
-import General.CONSTANTS;
 import General.Hitbox;
 import General.UTILS;
 import SpriteLib.Point;
 import processing.core.PApplet;
 
-public class Obstacle {
+public abstract class Obstacle {
 
     private final int width;
     private final int height = UTILS.chunksToPixel(1);
 
     private final Point position = new Point();
-    private final int speed;
+    private final double speed;
+    private double movement = 0;
 
-    private final Hitbox hitboxRelativ;
+    private Hitbox hitboxRelativ;
 
-
-    public Obstacle(int width, int speed, Hitbox hitboxRelativ) {
+    public Obstacle(int width, double speed, int startPositionX, Hitbox hitboxRelativ) {
         this.width = width;
         this.speed = speed;
         this.hitboxRelativ = hitboxRelativ;
+
+        position.setX(startPositionX);
     }
 
-    public int getWidth() {
+    public Obstacle(int width, int speed, int startPositionX) {
+        this(width, speed, startPositionX, new Hitbox(0, 0, 0, 0));
+    }
+
+    /**
+     * @return width in chunks
+     */
+    public int getWidthInChunks() {
         return width;
+    }
+
+    public int getWidthInPixel() {
+        return UTILS.chunksToPixel(width);
     }
 
     public int getHeight() {
@@ -45,28 +57,32 @@ public class Obstacle {
         position.setX(positionX);
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public Hitbox getHitboxAbsolute(int chunksY) {
-        return new Hitbox(position.getY() + hitboxRelativ.getTop() + UTILS.chunksToPixel(chunksY), position.getX() + width - hitboxRelativ.getRight(), position.getY() + height - hitboxRelativ.getBottom() + UTILS.chunksToPixel(chunksY), position.getX() + hitboxRelativ.getLeft());
+    public void setHitboxRelativ(Hitbox hitboxRelativ) {
+        this.hitboxRelativ = hitboxRelativ;
     }
 
-    private void checkPosition() {
-        if (speed > 0) {
-            if (position.getX() > 14 * CONSTANTS.CHUNK_SIZE) {
-                position.setX(-width); // move object to the left but -width to render outside the screen
-            }
-        } else {
-            if (position.getX() < -width) {
-                position.setX(CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE); // move object to the right
-            }
-        }
+    /**
+     * @param positionY in PX
+     * @return Hitbox
+     */
+    public Hitbox getHitboxAbsolute(int positionY) {
+        return new Hitbox(position.getY() + hitboxRelativ.getTop() + positionY, position.getX() + getWidthInPixel() + hitboxRelativ.getRight(), position.getY() + height + hitboxRelativ.getBottom() + positionY, position.getX() + hitboxRelativ.getLeft());
     }
+
+    protected abstract void checkPosition();
 
     public void draw(PApplet pApplet) {
-        position.setX(position.getX() + speed);
+        movement += speed;
+
+        if (Math.abs(movement) >= 1) {
+            position.setX(position.getX() + (int) movement);
+            movement = 0;
+        }
+
         checkPosition();
     }
 }

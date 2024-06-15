@@ -13,14 +13,14 @@ public class LaneRaceCar extends Lane {
         generateVehicles(VEHICLE_TYPE.RACE_CAR, amount, speed);
     }
 
-    public boolean checkCollision(Hitbox froggerHitbox) {
-        return checkCollision(froggerHitbox, 9);
+    public boolean checkCollision(Hitbox frogHitbox) {
+        return checkCollision(frogHitbox, VEHICLE_TYPE.RACE_CAR.getPositionY());
     }
 
     @Override
     public void draw(PApplet pApplet) {
         pApplet.pushMatrix();
-        pApplet.translate(0, UTILS.chunksToPixel(9));
+        pApplet.translate(0, VEHICLE_TYPE.RACE_CAR.getPositionY());
         super.draw(pApplet);
         pApplet.popMatrix();
     }

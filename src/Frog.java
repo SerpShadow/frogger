@@ -69,6 +69,14 @@ public class Frog {
         return sequencedSprite;
     }
 
+    public Point getPositionCurrent() {
+        return positionCurrent;
+    }
+
+    public void setPositionCurrentX(int positionX) {
+        positionCurrent.setX(positionX);
+    }
+
     public Point getPositionAbsolute() {
         return positionAbsolute;
     }
@@ -77,8 +85,8 @@ public class Frog {
         this.positionAbsolute = positionAbsolute;
     }
 
-    public Point getPositionCurrent() {
-        return positionCurrent;
+    public void setPositionAbsoluteX(int positionX) {
+        positionAbsolute.setX(positionX);
     }
 
     public boolean isDead() {
@@ -94,7 +102,6 @@ public class Frog {
     }
 
     public void keyPressed(int keyCode, Game game) {
-        System.out.println("keyPressed  " + keyCode);
         if (dead || positionAbsolute.getX() != positionCurrent.getX() || positionAbsolute.getY() != positionCurrent.getY()) {
             return;
         }
@@ -137,7 +144,6 @@ public class Frog {
         sequencedSprite.gotoSequence("right-move");
         positionAbsolute.setX(positionAbsolute.getX() + width);
     }
-
 
 
     public void onDeath() {

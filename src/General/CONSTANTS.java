@@ -3,8 +3,10 @@ package General;
 public interface CONSTANTS {
     int CHUNK_SIZE = 16;
     int CHUNK_SIZE_HALF = CHUNK_SIZE / 2;
-    int CHUNKS_HORIZONTALLY = 14;
-    int CHUNKS_VERTICALLY = 15;
+    int CHUNKS_HORIZONTAL = 14;
+    int CHUNKS_VERTICAL = 16;
+    int PIXEL_HORIZONTAL = CHUNKS_HORIZONTAL * CHUNK_SIZE;
+    int PIXEL_VERTICAL = CHUNKS_VERTICAL * CHUNK_SIZE;
     int SPEED_FROG = 4;
     int POINTS_PER_STEP = 10;
     int POINTS_PER_FROG = 50;
@@ -13,15 +15,37 @@ public interface CONSTANTS {
     int RESPAWN_DELAY = 2; // sec
     LevelData[] LEVEL_LIST = new LevelData[]{
             new LevelData(
-                    2,
+                    3,
                     1,
+
+                    4,
+                    -1,
+
                     2,
                     2,
+
+                    3,
+                    0.5,
+
                     2,
+                    -1,
+
+                    0,
+                    0,
+
+                    2,
+                    -1,
+
                     1,
-                    2,
                     1,
+
+                    3,
+                    -0.5,
+
                     2,
-                    1)
+                    0.5,
+
+                    3,
+                    -0.5)
     };
 }

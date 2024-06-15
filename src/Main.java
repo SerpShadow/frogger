@@ -4,8 +4,8 @@ import processing.core.PImage;
 
 
 public class Main extends PApplet {
-    private int windowWidth = CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE * 3;
-    private int windowHeight = CONSTANTS.CHUNKS_VERTICALLY * CONSTANTS.CHUNK_SIZE * 3;
+    private int windowWidth = CONSTANTS.CHUNKS_HORIZONTAL * CONSTANTS.CHUNK_SIZE * 3;
+    private int windowHeight = CONSTANTS.CHUNKS_VERTICAL * CONSTANTS.CHUNK_SIZE * 3;
 
     private int nextAnimAt = 0;
 
@@ -48,10 +48,10 @@ public class Main extends PApplet {
 
     @Override
     public void keyPressed() {
-        System.out.println("keyPressed: " + keyCode);
-        System.out.println(keyCode);
-        System.out.println("keyPressed: " + key);
-        System.out.println(key);
+//        System.out.println("keyPressed: " + keyCode);
+//        System.out.println(keyCode);
+//        System.out.println("keyPressed: " + key);
+//        System.out.println(key);
 //        if (key == CODED) {
         if (game != null) game.keyPressed(keyCode);
 //        }
@@ -70,14 +70,14 @@ public class Main extends PApplet {
     public void draw() {
         if (millis() < nextAnimAt)
             return;
-        nextAnimAt = millis() + 33; // 50fps
+        nextAnimAt = millis() + 33; // 30fps
         scale(3);
         background(0, 0, 0);
 
         pushMatrix();
         translate(0, 0);
         fill(0, 0, 71);
-        rect(0, 0, CONSTANTS.CHUNKS_HORIZONTALLY * CONSTANTS.CHUNK_SIZE, (int) (7.5 * CONSTANTS.CHUNK_SIZE) + 8);
+        rect(0, 0, CONSTANTS.PIXEL_HORIZONTAL, (int) (7.5 * CONSTANTS.CHUNK_SIZE) + 8);
         popMatrix();
 
         if (splashScreen != null) {

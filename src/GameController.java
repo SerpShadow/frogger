@@ -1,5 +1,6 @@
 import General.CONSTANTS;
 import General.Hitbox;
+import General.LevelData;
 import General.UTILS;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -26,13 +27,11 @@ public class GameController {
 
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
 
-//        generateFloatings(spriteMap);
-
         home = new Home(pApplet, spriteMap);
-        medianStrip = new Grass(pApplet, spriteMap, 7 * CONSTANTS.CHUNK_SIZE);
         generateRivers(pApplet);
-        generateVehicles(pApplet);
-        startStrip = new Grass(pApplet, spriteMap, 13 * CONSTANTS.CHUNK_SIZE);
+        medianStrip = new Grass(pApplet, spriteMap, 8 * CONSTANTS.CHUNK_SIZE);
+//        generateVehicles(pApplet);
+        startStrip = new Grass(pApplet, spriteMap, 14 * CONSTANTS.CHUNK_SIZE);
 
         frog = new Frog(pApplet, CONSTANTS.SPEED_FROG);
     }
@@ -41,79 +40,66 @@ public class GameController {
         frog.keyPressed(keyCode, game);
     }
 
-    private void generateFloatings(PImage spriteMap) {
-
-//        int LOG_TOP = 2;
-//        for (int i = 0; i < LOG_TOP; i++) {
-//            Log log = new Log(pApplet, spriteMap, 4, 4, UTILS.generateVehicleXPosition(4 * CONSTANTS.CHUNK_SIZE, i, LOG_TOP));
-//            logs.add(log);
-//        }
-//
-//        int LOG_MIDDLE = 1;
-//        for (int i = 0; i < LOG_MIDDLE; i++) {
-//            Log log = new Log(pApplet, spriteMap, 6, 6, UTILS.generateVehicleXPosition(6 * CONSTANTS.CHUNK_SIZE, i, LOG_MIDDLE));
-//            logs.add(log);
-//        }
-//
-//        int LOG_BOTTOM = 2;
-//        for (int i = 0; i < LOG_BOTTOM; i++) {
-//            Log log = new Log(pApplet, spriteMap, 3, 7, UTILS.generateVehicleXPosition(3 * CONSTANTS.CHUNK_SIZE, i, LOG_BOTTOM));
-//            logs.add(log);
-//        }
-
-//        Log log1 = new Log(pApplet, spriteMap, 4, 4, UTILS.generateVehicleXPosition(3 * CONSTANTS.CHUNK_SIZE, 0, 2));
-//
-//
-//        Log log2 = new Log(pApplet, spriteMap, 6, 6, 88);
-//        Log log3 = new Log(pApplet, spriteMap, 3, 7, 22);
-//        logs.add(log1);
-//        logs.add(log2);
-//        logs.add(log3);
-    }
-
     private void generateRivers(PApplet pApplet) {
+        LevelData levelData = UTILS.getCurrentLevelData();
         rivers = new ArrayList<>();
-
-        RiverLog riverLog = new RiverLog(pApplet);
-        rivers.add(riverLog);
+        rivers.add(new RiverLog(pApplet, RIVER_TYPE.FIRST, levelData.getRiverFirstAmount(), levelData.getRiverFirstSpeed()));
+        rivers.add(new RiverTurtle(pApplet, RIVER_TYPE.SECOND, levelData.getRiverSecondAmount(), levelData.getRiverSecondSpeed()));
+        rivers.add(new RiverLog(pApplet, RIVER_TYPE.THIRD, levelData.getRiverThirdAmount(), levelData.getRiverThirdSpeed()));
+        rivers.add(new RiverLog(pApplet, RIVER_TYPE.FOURTH, levelData.getRiverFourthAmount(), levelData.getRiverFourthSpeed()));
+        rivers.add(new RiverTurtle(pApplet, RIVER_TYPE.FIFTH, levelData.getRiverFifthAmount(), levelData.getRiverFifthSpeed()));
     }
 
     private void generateVehicles(PApplet pApplet) {
         lanes = new ArrayList<>();
+        lanes.add(new LaneTruck(pApplet));
+        lanes.add(new LaneRaceCar(pApplet));
+        lanes.add(new LaneCoupe(pApplet));
+        lanes.add(new LaneBulldozer(pApplet));
+        lanes.add(new LaneDuneBuggy(pApplet));
+    }
 
-        LaneTruck laneTruck = new LaneTruck(pApplet);
-        lanes.add(laneTruck);
-
-        LaneRaceCar laneRaceCar = new LaneRaceCar(pApplet);
-        lanes.add(laneRaceCar);
-
-        LaneCoupe laneCoupe = new LaneCoupe(pApplet);
-        lanes.add(laneCoupe);
-
-        LaneBulldozer laneBulldozer = new LaneBulldozer(pApplet);
-        lanes.add(laneBulldozer);
-
-        LaneDuneBuggy laneDuneBuggy = new LaneDuneBuggy(pApplet);
-        lanes.add(laneDuneBuggy);
+    private void handleDeath() {
+        frog.onDeath();
+        game.onDeath();
     }
 
     private void checkCollision() {
         if (!frog.isDead()) {
-            Hitbox froggerHitbox = frog.getHitbox();
+            Hitbox frogHitbox = frog.getHitbox();
 
             for (Lane lane : lanes) {
-                if (lane.checkCollision(froggerHitbox)) {
-                    frog.onDeath();
-                    game.onDeath();
+                if (lane.checkCollision(frogHitbox)) {
+//                    handleDeath();
                 }
             }
+
+            for (River river : rivers) {
+                int frogPositionY = frog.getPositionCurrent().getY();
+                int riverPositionY = river.getRiverType().getPositionY();
+                if (riverPositionY == frogPositionY) {
+                    if (river.isFrogOnFloating(frogHitbox)) {
+                        frog.setPositionAbsoluteX(frog.getPositionAbsolute().getX() + river.getSpeed());
+                        frog.setPositionCurrentX(frog.getPositionCurrent().getX() + river.getSpeed());
+                    } else {
+                        handleDeath();
+                    }
+
+
+                }
+
+//                if (river.checkCollision)
+            }
+
+
         }
     }
 
     public void draw(PApplet pApplet) {
-        for (River river : rivers) {
-            river.draw(pApplet);
-        }
+        rivers.forEach(river -> river.draw(pApplet));
+//        for (River river : rivers) {
+//            river.draw(pApplet);
+//        }
         for (Lane lane : lanes) {
             lane.draw(pApplet);
         }

@@ -13,14 +13,14 @@ public class LaneDuneBuggy extends Lane {
         generateVehicles(VEHICLE_TYPE.DUNE_BUGGY, amount, vehicleSpeed);
     }
 
-    public boolean checkCollision(Hitbox froggerHitbox) {
-        return checkCollision(froggerHitbox, 12);
+    public boolean checkCollision(Hitbox frogHitbox) {
+        return checkCollision(frogHitbox, VEHICLE_TYPE.DUNE_BUGGY.getPositionY());
     }
 
     @Override
     public void draw(PApplet pApplet) {
         pApplet.pushMatrix();
-        pApplet.translate(0, UTILS.chunksToPixel(12));
+        pApplet.translate(0, VEHICLE_TYPE.DUNE_BUGGY.getPositionY());
         super.draw(pApplet);
         pApplet.popMatrix();
     }

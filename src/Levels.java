@@ -1,12 +1,14 @@
+import General.LevelData;
+
 public interface Levels {
     int currentLevel = 0;
 
 
     LevelData[] list = new LevelData[]{
-            new LevelData(2, 1, 2, 2, 2, 1, 2, 1, 2, 1)
+//            new LevelData(2, 1, 2, 2, 2, 1, 2, 1, 2, 1)
     };
 
-//    LevelData getCurrentLevelData() {
+//    General.LevelData getCurrentLevelData() {
 //        return list[currentLevel];
 //    }
 }

@@ -41,7 +41,7 @@ public class Game {
         displayScore = new Text(pApplet, new Point(1 * CONSTANTS.CHUNK_SIZE + 8, 8 + 1), TEXT_COLOR.RED, ("00000" + stringScore).substring(stringScore.length()));
         displayHiScore = new Text(pApplet, new Point(7 * CONSTANTS.CHUNK_SIZE + 8, 8 + 1), TEXT_COLOR.RED, ("00000" + stringScore).substring(stringScore.length()));
 
-//        Writer wr = new FileWriter("123.txt");
+
     }
 
     public void keyPressed(int keyCode) {

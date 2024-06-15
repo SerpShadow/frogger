@@ -16,6 +16,10 @@ public class Point
         this.y = y;
     }
 
+    /**
+     *
+     * @return x in PX
+     */
     public int getX()
     {
         return x;
@@ -26,6 +30,10 @@ public class Point
         this.x = x;
     }
 
+    /**
+     *
+     * @return y in PX
+     */
     public int getY()
     {
         return y;

@@ -13,14 +13,14 @@ public class LaneBulldozer extends Lane {
         generateVehicles(VEHICLE_TYPE.BULLDOZER, amount, speed);
     }
 
-    public boolean checkCollision(Hitbox froggerHitbox) {
-        return checkCollision(froggerHitbox, 11);
+    public boolean checkCollision(Hitbox frogHitbox) {
+        return checkCollision(frogHitbox, VEHICLE_TYPE.BULLDOZER.getPositionY());
     }
 
     @Override
     public void draw(PApplet pApplet) {
         pApplet.pushMatrix();
-        pApplet.translate(0, UTILS.chunksToPixel(11));
+        pApplet.translate(0, VEHICLE_TYPE.BULLDOZER.getPositionY());
         super.draw(pApplet);
         pApplet.popMatrix();
     }

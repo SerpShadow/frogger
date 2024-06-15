@@ -1,22 +1,53 @@
 package General;
 
 public class LevelData {
-    private int vehicleTruckAmount;
-    private int vehicleTruckSpeed;
 
-    private int vehicleRaceCarAmount;
-    private int vehicleRaceCarSpeed;
+    private final int riverFirstAmount;
+    private final double riverFirstSpeed;
 
-    private int vehicleCoupeAmount;
-    private int vehicleCoupeSpeed;
+    private final int riverSecondAmount;
+    private final double riverSecondSpeed;
 
-    private int vehicleBulldozerAmount;
-    private int vehicleBulldozerSpeed;
+    private final int riverThirdAmount;
+    private final double riverThirdSpeed;
 
-    private int vehicleDuneBuggyAmount;
-    private int vehicleDuneBuggySpeed;
+    private final int riverFourthAmount;
+    private final double riverFourthSpeed;
 
-    public LevelData(int vehicleTruckAmount, int vehicleTruckSpeed, int vehicleRaceCarAmount, int vehicleRaceCarSpeed, int vehicleCoupeAmount, int vehicleCoupeSpeed, int vehicleBulldozerAmount, int vehicleBulldozerSpeed, int vehicleDuneBuggyAmount, int vehicleDuneBuggySpeed) {
+    private final int riverFifthAmount;
+    private final double riverFifthSpeed;
+
+    private final int medianStripSnakesAmount;
+    private final double medianStripSnakesSpeed;
+
+    private final int vehicleTruckAmount;
+    private final double vehicleTruckSpeed;
+
+    private final int vehicleRaceCarAmount;
+    private final double vehicleRaceCarSpeed;
+
+    private final int vehicleCoupeAmount;
+    private final double vehicleCoupeSpeed;
+
+    private final int vehicleBulldozerAmount;
+    private final double vehicleBulldozerSpeed;
+
+    private final int vehicleDuneBuggyAmount;
+    private final double vehicleDuneBuggySpeed;
+
+    public LevelData(int riverFirstAmount, double riverFirstSpeed, int riverSecondAmount, double riverSecondSpeed, int riverThirdAmount, double riverThirdSpeed, int riverFourthAmount, double riverFourthSpeed, int riverFifthAmount, double riverFifthSpeed, int medianStripSnakesAmount, double medianStripSnakesSpeed, int vehicleTruckAmount, double vehicleTruckSpeed, int vehicleRaceCarAmount, double vehicleRaceCarSpeed, int vehicleCoupeAmount, double vehicleCoupeSpeed, int vehicleBulldozerAmount, double vehicleBulldozerSpeed, int vehicleDuneBuggyAmount, double vehicleDuneBuggySpeed) {
+        this.riverFirstAmount = riverFirstAmount;
+        this.riverFirstSpeed = riverFirstSpeed;
+        this.riverSecondAmount = riverSecondAmount;
+        this.riverSecondSpeed = riverSecondSpeed;
+        this.riverThirdAmount = riverThirdAmount;
+        this.riverThirdSpeed = riverThirdSpeed;
+        this.riverFourthAmount = riverFourthAmount;
+        this.riverFourthSpeed = riverFourthSpeed;
+        this.riverFifthAmount = riverFifthAmount;
+        this.riverFifthSpeed = riverFifthSpeed;
+        this.medianStripSnakesAmount = medianStripSnakesAmount;
+        this.medianStripSnakesSpeed = medianStripSnakesSpeed;
         this.vehicleTruckAmount = vehicleTruckAmount;
         this.vehicleTruckSpeed = vehicleTruckSpeed;
         this.vehicleRaceCarAmount = vehicleRaceCarAmount;
@@ -29,11 +60,59 @@ public class LevelData {
         this.vehicleDuneBuggySpeed = vehicleDuneBuggySpeed;
     }
 
+    public int getRiverFirstAmount() {
+        return riverFirstAmount;
+    }
+
+    public double getRiverFirstSpeed() {
+        return riverFirstSpeed;
+    }
+
+    public int getRiverSecondAmount() {
+        return riverSecondAmount;
+    }
+
+    public double getRiverSecondSpeed() {
+        return riverSecondSpeed;
+    }
+
+    public int getRiverThirdAmount() {
+        return riverThirdAmount;
+    }
+
+    public double getRiverThirdSpeed() {
+        return riverThirdSpeed;
+    }
+
+    public int getRiverFourthAmount() {
+        return riverFourthAmount;
+    }
+
+    public double getRiverFourthSpeed() {
+        return riverFourthSpeed;
+    }
+
+    public int getRiverFifthAmount() {
+        return riverFifthAmount;
+    }
+
+    public double getRiverFifthSpeed() {
+        return riverFifthSpeed;
+    }
+
+    public int getMedianStripSnakesAmount() {
+        return medianStripSnakesAmount;
+    }
+
+    public double getMedianStripSnakesSpeed() {
+        return medianStripSnakesSpeed;
+    }
+
     public int getVehicleTruckAmount() {
         return vehicleTruckAmount;
     }
 
-    public int getVehicleTruckSpeed() {
+    public double getVehicleTruckSpeed() {
         return vehicleTruckSpeed;
     }
 
@@ -41,7 +120,7 @@ public class LevelData {
         return vehicleRaceCarAmount;
     }
 
-    public int getVehicleRaceCarSpeed() {
+    public double getVehicleRaceCarSpeed() {
         return vehicleRaceCarSpeed;
     }
 
@@ -49,7 +128,7 @@ public class LevelData {
         return vehicleCoupeAmount;
     }
 
-    public int getVehicleCoupeSpeed() {
+    public double getVehicleCoupeSpeed() {
         return vehicleCoupeSpeed;
     }
 
@@ -57,7 +136,7 @@ public class LevelData {
         return vehicleBulldozerAmount;
     }
 
-    public int getVehicleBulldozerSpeed() {
+    public double getVehicleBulldozerSpeed() {
         return vehicleBulldozerSpeed;
     }
 
@@ -65,7 +144,7 @@ public class LevelData {
         return vehicleDuneBuggyAmount;
     }
 
-    public int getVehicleDuneBuggySpeed() {
+    public double getVehicleDuneBuggySpeed() {
         return vehicleDuneBuggySpeed;
     }
 }

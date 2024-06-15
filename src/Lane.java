@@ -18,16 +18,16 @@ public abstract class Lane {
     protected void generateVehicles(VEHICLE_TYPE vehicleType, int amount, int speed) {
         PImage vehiclesSprite = pApplet.loadImage("assets/vehicles.png");
         for (int i = 0; i < amount; i++) {
-            Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, speed, UTILS.generateVehicleXPosition(vehicleType.getWidth(), i, amount));
+            Vehicle vehicle = new Vehicle(pApplet, vehiclesSprite, vehicleType, speed, UTILS.generateVehicleXPosition(UTILS.chunksToPixel(vehicleType.getWidth()), i, amount));
             vehicles.add(vehicle);
         }
     }
 
     public abstract boolean checkCollision(Hitbox hitbox);
 
-    public boolean checkCollision(Hitbox froggerHitbox, int chunksY) {
+    public boolean checkCollision(Hitbox frogHitbox, int positionY) {
         for (Vehicle vehicle : vehicles) {
-            if (UTILS.isColliding(froggerHitbox, vehicle.getHitboxAbsolute(chunksY))) {
+            if (UTILS.isColliding(frogHitbox, vehicle.getHitboxAbsolute(positionY))) {
                 System.out.println("Collision found");
                 return true;
             }

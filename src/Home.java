@@ -22,7 +22,7 @@ public class Home {
 
     private void drawHome(PApplet pApplet) {
         int offsetY = (int) (1.5 * CONSTANTS.CHUNK_SIZE);
-        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTALLY * 2; i++) {
+        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTAL * 2; i++) {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(2);
@@ -45,7 +45,7 @@ public class Home {
             }
         }
 
-        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTALLY * 2; i++) {
+        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTAL * 2; i++) {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(10);
@@ -63,7 +63,7 @@ public class Home {
             }
         }
 
-        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTALLY * 2; i++) {
+        for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTAL * 2; i++) {
             switch (i % 6) {
                 case 0:
                     bottom.setFrame(16);

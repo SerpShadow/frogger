@@ -4,35 +4,33 @@ import SpriteLib.Point;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Log extends Floating {
-
+public class Turtle extends Floating {
     private Hitbox hitbox = new Hitbox(0, -8, 0, 8);
 
+    private final boolean isSubmerging = false;
 
-    public Log(PApplet pApplet, int width, double speed, int startPosition) {
+
+    public Turtle(PApplet pApplet, int width, double speed, int startPosition, boolean isSubmerging) {
         super(pApplet, width, speed, startPosition);
         setHitboxRelativ(hitbox);
 
-        PImage logSprite = pApplet.loadImage("assets/log.png");
-        getMultiSprite().addFrames(pApplet, logSprite, 0, 0, 3);
-
+        PImage turtleSprite = pApplet.loadImage("assets/turtle.png");
+        getMultiSprite().addFrames(pApplet, turtleSprite, 0, 0, 5);
     }
 
     @Override
     public void draw(PApplet pApplet) {
         super.draw(pApplet);
 
+        int counter = (pApplet.millis() / 500) % 3;
+
         for (int i = 0; i < getWidthInChunks(); i++) {
             int positionX = getPositionX() + i * CONSTANTS.CHUNK_SIZE;
             Point drawPosition = new Point(positionX, getPositionY());
-            if (i == 0) {
-                getMultiSprite().setFrame(0);
-            } else if (i == getWidthInChunks() - 1) {
-                getMultiSprite().setFrame(2);
-            } else {
-                getMultiSprite().setFrame(1);
-            }
+            getMultiSprite().setFrame(counter);
             getMultiSprite().draw(pApplet, drawPosition);
+
         }
     }
+
 }
