@@ -17,11 +17,21 @@ public class RiverTurtle extends River {
         super(pApplet, riverType, speed);
         this.riverType = riverType;
 
+        boolean submergingTurtleRendered = false;
+//        boolean isSubmerging = false;
         for (int i = 0; i < amount; i++) {
+            boolean isSubmerging = false;
+            if (!submergingTurtleRendered) {
+                double probability = 1.0 / amount * (i + 1);
+                isSubmerging = UTILS.randomBoolean(probability);
+                if (isSubmerging) {
+                    submergingTurtleRendered = true;
+                }
+            }
 
             int xPosition = UTILS.generateVehicleXPosition(riverType.getWidth(), i, amount);
-            turtles.add(new Turtle(pApplet, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition, false));
-            turtles.add(new Turtle(pApplet, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition + CONSTANTS.PIXEL_HORIZONTAL, false));
+            turtles.add(new Turtle(pApplet, turtleSprite, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition, isSubmerging));
+            turtles.add(new Turtle(pApplet, turtleSprite, UTILS.pixelToChunks(riverType.getWidth()), speed, xPosition + CONSTANTS.PIXEL_HORIZONTAL, isSubmerging));
         }
 
 
