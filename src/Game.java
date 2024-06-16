@@ -7,6 +7,8 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Game {
 
@@ -37,9 +39,9 @@ public class Game {
             score = allScores.getLast();
         }
 
-        ArrayList<Integer> xxx = UTILS.getScoresSorted(1);
-        if (!xxx.isEmpty()) {
-            scoreHi = xxx.getFirst();
+        ArrayList<Integer> scoresSorted = UTILS.getScoresSorted(1);
+        if (!scoresSorted.isEmpty()) {
+            scoreHi = scoresSorted.getFirst();
         }
 
         titleScore = new Text(pApplet, new Point(UTILS.chunksToPixel(2), 0 + 1), TEXT_COLOR.WHITE, "1-UP"); // adding +1 for better optic
@@ -51,10 +53,20 @@ public class Game {
 
     public void setGameStage(GAME_STAGE gameStage) {
         switch (gameStage) {
-            case SPLASH_SCREEN -> splashScreen = new SplashScreen(pApplet);
-            case GAME_INTRO -> gameIntro = new GameIntro(pApplet);
-            case MAIN -> gameController = new GameController(pApplet, this);
-            case SCORE_RANKING -> scoreRanking = new ScoreRanking(pApplet);
+            case SPLASH_SCREEN:
+                splashScreen = new SplashScreen(pApplet);
+                break;
+            case GAME_INTRO:
+                gameIntro = new GameIntro(pApplet);
+                break;
+            case MAIN:
+                setScore(0);
+                UTILS.setCurrentLevel(1);
+                gameController = new GameController(pApplet, this);
+                break;
+            case SCORE_RANKING:
+                scoreRanking = new ScoreRanking(pApplet);
+                break;
         }
         this.gameStage = gameStage;
     }
@@ -68,7 +80,6 @@ public class Game {
             }
         } else if (gameStage == GAME_STAGE.SCORE_RANKING) {
             if (keyCode == PConstants.BEVEL) {
-                setScore(0);
                 setGameStage(GAME_STAGE.MAIN);
             }
         } else {
@@ -92,7 +103,9 @@ public class Game {
 
     public void gameOver() {
         UTILS.setScore(score);
-        setGameStage(GAME_STAGE.SCORE_RANKING);
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
+            setGameStage(GAME_STAGE.SCORE_RANKING);
+        });
     }
 
     private void drawHeader(PApplet pApplet) {
