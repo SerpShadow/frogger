@@ -29,8 +29,6 @@ public class GameIntro {
     public GameIntro(PApplet pApplet) {
         this.pApplet = pApplet;
 
-        System.out.println(CONSTANTS.CHUNKS_VERTICAL / 2);
-
         // Sprite for title
         PImage spriteMap = pApplet.loadImage("assets/frogger-sprite.png");
         multiSprite.addFrames(pApplet, spriteMap, 25 * CONSTANTS.CHUNK_SIZE + 0 * (CONSTANTS.CHUNK_SIZE + 8), 23 * CONSTANTS.CHUNK_SIZE, 1);
@@ -76,13 +74,13 @@ public class GameIntro {
     }
 
     public void keyPressed(int key) {
-        if (gameIntroStage == GAME_INTRO_STAGE.SCORE_RANKING){
+        if (gameIntroStage == GAME_INTRO_STAGE.SCORE_RANKING) {
 
         }
     }
 
     private void addNewFrog(int index) {
-        FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition, 8);
+        FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition, 2);
         frogAuto.goToPositionX(UTILS.chunksToPixel(2) + UTILS.chunksToPixel(1.5) * index);
         frogs.add(frogAuto);
     }
@@ -118,7 +116,6 @@ public class GameIntro {
                             }
                         } else {
                             if (!frogs.get(i).isMoving()) {
-                                System.out.println("Stoped moving");
                                 startMovingUp();
                                 gameIntroStage = GAME_INTRO_STAGE.MOVING_UP;
                             }

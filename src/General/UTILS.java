@@ -11,7 +11,6 @@ public class UTILS {
         Random rand = new Random();
         int min = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * index;
         int max = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * (index + 1) - width - CONSTANTS.CHUNK_SIZE_HALF;
-        System.out.println("min: " + min + " max: " + max);
         return rand.nextInt(Math.max(max, 1) - min) + min;
     }
 

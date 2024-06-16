@@ -31,7 +31,7 @@ public class SplashScreen {
 
         if (counter == 20) {
             zerosMatrix.subList(2, CONSTANTS.CHUNKS_VERTICAL * 2 - 2).clear();
-        } else if (counter > 25 && (counter % 2 == 0)) {
+        } else if (counter > 25) {
             for (List<Text> zerosArray : zerosMatrix) {
                 if (!zerosArray.isEmpty()) {
                     zerosArray.removeLast();

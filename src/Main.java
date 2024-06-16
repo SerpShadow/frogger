@@ -43,13 +43,7 @@ public class Main extends PApplet {
 
     @Override
     public void keyPressed() {
-//        System.out.println("keyPressed: " + keyCode);
-//        System.out.println(keyCode);
-//        System.out.println("keyPressed: " + key);
-//        System.out.println(key);
-//        if (key == CODED) {
         if (game != null) game.keyPressed(keyCode);
-//        }
     }
 
     /**

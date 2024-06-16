@@ -17,25 +17,11 @@ public class ScoreRanking {
 
     public ScoreRanking(PApplet pApplet) {
 
-//        try {
-//            File myObj = new File("src/scores.txt");
-//            Scanner myReader = new Scanner(myObj);
-//            while (myReader.hasNextLine()) {
-//                String data = myReader.nextLine();
-//                scores.add(Integer.parseInt(data));
-//            }
-//            myReader.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
-
         ArrayList<Integer> allScores = UTILS.getScores();
         int lastScore = -1;
         if (!allScores.isEmpty()) {
             lastScore = allScores.getLast();
         }
-
 
         title = new Text(pApplet, new Point((int) (3.5 * CONSTANTS.CHUNK_SIZE), (int) (5.5 * CONSTANTS.CHUNK_SIZE)), TEXT_COLOR.YELLOW, "Score Ranking");
 

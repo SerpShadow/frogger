@@ -30,7 +30,7 @@ public class Game {
 
     public Game(PApplet pApplet) {
         this.pApplet = pApplet;
-        setGameStage(GAME_STAGE.SCORE_RANKING);
+        setGameStage(GAME_STAGE.SPLASH_SCREEN);
 
         ArrayList<Integer> allScores = UTILS.getScores();
         if (!allScores.isEmpty()) {
@@ -86,7 +86,6 @@ public class Game {
         if (score > scoreHi) {
             scoreHi = score;
         }
-        System.out.println(score);
         displayScore.setString(String.format("%05d", score));
         displayScoreHi.setString(String.format("%05d", scoreHi));
     }
