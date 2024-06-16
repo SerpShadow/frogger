@@ -11,15 +11,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Frog extends GameObject {
 
-    private final int width = CONSTANTS.CHUNK_SIZE;
-    private final int height = CONSTANTS.CHUNK_SIZE;
     private final Point startPosition;
 
     private boolean dead = false;
     private boolean inputBlocked = false;
 
 
-    private final SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
+    private final SequencedSprite sequencedSprite = new SequencedSprite(CONSTANTS.CHUNK_SIZE, CONSTANTS.CHUNK_SIZE, 30, ANCHORTYPE.TOP_LEFT);
 
     public Frog(PApplet pApplet, Point startPosition, int movementSpeed) {
         super(1, movementSpeed, UTILS.chunksToPixel(7), new Hitbox(2, -2, -2, 2));
