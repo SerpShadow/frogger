@@ -8,8 +8,6 @@ import processing.core.PConstants;
 
 public class FrogManual extends Frog {
 
-    private int prevMaxPositionY = UTILS.chunksToPixel(14);
-
     public FrogManual(PApplet pApplet) {
         super(pApplet, new Point(UTILS.chunksToPixel(7), UTILS.chunksToPixel(14)), CONSTANTS.SPEED_FROG);
 
@@ -69,11 +67,5 @@ public class FrogManual extends Frog {
     public void goRight() {
         getSequencedSprite().gotoSequence("right-move");
         setDestinationX(getDestinationX() + getWidthInPixel());
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        prevMaxPositionY = UTILS.chunksToPixel(14);
     }
 }

@@ -8,7 +8,6 @@ import SpriteLib.Point;
 import Text.Text;
 import Text.TEXT_COLOR;
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PImage;
 
 import java.util.concurrent.CompletableFuture;
@@ -27,9 +26,10 @@ public class GameController {
     private River[] rivers = new River[5];
     private Lane[] lanes = new Lane[5];
 
-    private int lives = 5;
+    private int lives = 3;
     private final MultiSprite multiSprite = new MultiSprite(CONSTANTS.CHUNK_SIZE_HALF, CONSTANTS.CHUNK_SIZE_HALF, ANCHORTYPE.TOP_LEFT);
-    private final Text timeText;
+    private Text remainingTimeText;
+    private final Text footerTimeText;
     private long remainingSeconds;
     private long endTime = System.currentTimeMillis() + 60 * 1000;
 
@@ -50,7 +50,7 @@ public class GameController {
         startStrip = new Grass(pApplet, spriteMap, 14);
         frogManual = new FrogManual(pApplet);
         multiSprite.addFrames(pApplet, spriteMap, UTILS.chunksToPixel(13), 16, 14);
-        timeText = new Text(pApplet, new Point(UTILS.chunksToPixel(12), CONSTANTS.CHUNK_SIZE_HALF), TEXT_COLOR.YELLOW, "Time");
+        footerTimeText = new Text(pApplet, new Point(UTILS.chunksToPixel(12), CONSTANTS.CHUNK_SIZE_HALF), TEXT_COLOR.YELLOW, "Time");
 
     }
 
@@ -94,12 +94,34 @@ public class GameController {
         });
     }
 
+    private void resetFrogPosition() {
+        frogPrevMaxPositionY = UTILS.chunksToPixel(14);
+        frogManual.onRestart();
+    }
+
+    private void handleHome(Home home) {
+        game.increaseScoreBy(CONSTANTS.POINTS_PER_FROG);
+
+        remainingTimeText = new Text(pApplet, new Point(UTILS.chunksToPixel(5.5), UTILS.chunksToPixel(8.5)), TEXT_COLOR.RED, "Time " + String.format("%02d", remainingSeconds));
+
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY + 2000, TimeUnit.MILLISECONDS).execute(() -> {
+            remainingTimeText = null;
+        });
+
+        if (home.getAllHomesOccupied()) {
+            startNextLevel();
+        } else {
+            resetFrogPosition();
+        }
+    }
+
     private void handleDeath() {
+        frogPrevMaxPositionY = UTILS.chunksToPixel(14);
         frogManual.onDeath();
         lives -= 1;
 
-        if (lives < 1) {
-            game.setGameStage(GAME_STAGE.SCORE_RANKING);
+        if (lives < 0) {
+            game.gameOver();
         } else {
             restartTimer();
         }
@@ -114,12 +136,10 @@ public class GameController {
         medianStrip.generateSnakes(pApplet);
         generateVehicles(pApplet);
 
-        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
-            home.resetOccupiedHomes();
-        });
+        resetFrogPosition();
 
+        CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(home::resetOccupiedHomes);
 
-        frogManual.onRestart();
     }
 
     private void checkCollision() {
@@ -127,15 +147,10 @@ public class GameController {
             Hitbox frogHitbox = frogManual.getHitboxAbsolute(0);
             int frogPositionY = frogManual.getPositionY();
 
-            int homePositionY = 32;
+            int homePositionY = 32; // in PX
             if (frogPositionY == homePositionY) {
                 if (home.checkCollision(frogHitbox)) {
-                    game.increaseScoreBy(CONSTANTS.POINTS_PER_FROG);
-                    if (home.getAllHomesOccupied()) {
-                        startNextLevel();
-                    } else {
-                        frogManual.onRestart();
-                    }
+                    handleHome(home);
                 } else {
                     handleDeath();
                 }
@@ -152,8 +167,6 @@ public class GameController {
                     }
                 }
             }
-
-//            System.out.println(medianStrip.checkCollision(frogHitbox));
 
 //            if (frogPositionY == UTILS.chunksToPixel(8)) {
             if (medianStrip.checkCollision(frogHitbox)) {
@@ -180,24 +193,7 @@ public class GameController {
         remainingSeconds = (endTime - System.currentTimeMillis()) / 1000;
     }
 
-    public void draw(PApplet pApplet) {
-
-        if (frogManual.getDestinationY() < frogPrevMaxPositionY ) {
-            frogPrevMaxPositionY = frogManual.getDestinationY();
-            game.increaseScoreBy(10);
-        }
-
-        home.draw(pApplet);
-        for (River river : rivers) {
-            river.draw(pApplet);
-        }
-        medianStrip.draw(pApplet);
-        for (Lane lane : lanes) {
-            lane.draw(pApplet);
-        }
-        startStrip.draw(pApplet);
-
-        // Footer - START
+    private void drawFooter(PApplet pApplet) {
         pApplet.pushMatrix();
         pApplet.translate(0, UTILS.chunksToPixel(15));
         multiSprite.setFrame(2);
@@ -229,10 +225,37 @@ public class GameController {
                 multiSprite.draw(pApplet, point);
             }
         }
-        timeText.draw(pApplet);
+        footerTimeText.draw(pApplet);
         pApplet.popMatrix();
-        // Footer - END
+    }
 
+    public void draw(PApplet pApplet) {
+
+        if (frogManual.getDestinationY() < frogPrevMaxPositionY) {
+            frogPrevMaxPositionY = frogManual.getDestinationY();
+            game.increaseScoreBy(CONSTANTS.POINTS_PER_STEP);
+        }
+
+        home.draw(pApplet);
+        for (River river : rivers) {
+            river.draw(pApplet);
+        }
+        medianStrip.draw(pApplet);
+        for (Lane lane : lanes) {
+            lane.draw(pApplet);
+        }
+        startStrip.draw(pApplet);
+
+        drawFooter(pApplet);
+
+        if (remainingTimeText != null) {
+            pApplet.pushMatrix();
+            pApplet.fill(0, 0, 0);
+            pApplet.rect(UTILS.chunksToPixel(5.5), UTILS.chunksToPixel(8.5), UTILS.chunksToPixel(3.5), UTILS.chunksToPixel(0.5));
+            pApplet.popMatrix();
+
+            remainingTimeText.draw(pApplet);
+        }
         frogManual.draw(pApplet);
 
         checkCollision();

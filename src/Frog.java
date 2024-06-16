@@ -91,11 +91,11 @@ public class Frog extends GameObject {
 
     public void onRestart() {
         inputBlocked = true;
+        setFrogToStartPosition();
         sequencedSprite.gotoSequence("dead");
 
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             inputBlocked = false;
-            setFrogToStartPosition();
             sequencedSprite.gotoSequence("up");
         });
     }

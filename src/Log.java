@@ -11,11 +11,14 @@ public class Log extends Floating {
 
 
     public Log(PApplet pApplet, PImage logSprite,  int width, double speed, int startPosition) {
+//    public Log(PApplet pApplet, PImage logSprite,  int width, double speed, int startPosition, double probabilityCrocodile) {
         super(pApplet, width, speed, startPosition);
         setHitboxRelative(hitbox);
 
         getMultiSprite().addFrames(pApplet, logSprite, 0, 0, 3);
     }
+
+
 
     @Override
     public void draw(PApplet pApplet) {

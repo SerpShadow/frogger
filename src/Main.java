@@ -65,12 +65,6 @@ public class Main extends PApplet {
         scale(3);
         background(0, 0, 0);
 
-        pushMatrix();
-        translate(0, 0);
-        fill(0, 0, 71);
-        rect(0, 0, CONSTANTS.PIXEL_HORIZONTAL, (int) (CONSTANTS.PIXEL_VERTICAL / 2));
-        popMatrix();
-
         if (game != null) game.draw(this);
     }
 

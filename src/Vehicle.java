@@ -42,14 +42,6 @@ public class Vehicle extends Obstacle {
 
     }
 
-    void resetPosition() {
-        if (getMovementSpeed() > 0) {
-            setPositionX(-getWidthInPixel());
-        } else {
-            setPositionX(14 * CONSTANTS.CHUNK_SIZE);
-        }
-    }
-
     @Override
     protected void checkPosition() {
         if (getMovementSpeed() > 0) {

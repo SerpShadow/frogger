@@ -1,13 +1,18 @@
 package General;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
+import java.util.Scanner;
 
 public class UTILS {
     public static int generateVehicleXPosition(int width, int index, int totalAmount) {
         Random rand = new Random();
         int min = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * index;
-        int max = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * (index + 1) - width;
-        return rand.nextInt(max - min) + min;
+        int max = CONSTANTS.PIXEL_HORIZONTAL / totalAmount * (index + 1) - width - CONSTANTS.CHUNK_SIZE_HALF;
+        System.out.println("min: " + min + " max: " + max);
+        return rand.nextInt(Math.max(max, 1) - min) + min;
     }
 
     public static boolean isColliding(Hitbox hitbox1, Hitbox hitbox2) {
@@ -26,7 +31,7 @@ public class UTILS {
         return (int) (pixel / CONSTANTS.CHUNK_SIZE);
     }
 
-    public static boolean randomBoolean(double probability){
+    public static boolean randomBoolean(double probability) {
         return Math.random() < probability;
     }
 
@@ -49,5 +54,44 @@ public class UTILS {
         return CONSTANTS.LEVEL_LIST[currentLevel - 1];
     }
 
+    public static ArrayList<Integer> getScores() {
+        ArrayList<Integer> scores = new ArrayList<>();
+        try {
+            File myObj = new File("src/scores.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                scores.add(Integer.parseInt(data));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return scores;
+    }
 
+    public static ArrayList<Integer> getScoresSorted(int scoreListLength) {
+        ArrayList<Integer> scores = UTILS.getScores();
+
+        scores.sort(Comparator.reverseOrder());
+        while (scores.size() > scoreListLength) {
+            scores.removeLast();
+        }
+        return scores;
+    }
+
+    public static void setScore(int score) {
+        try {
+
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("src/scores.txt", true)));
+            writer.println(score);
+            writer.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
 }
