@@ -13,8 +13,6 @@ public class Text {
     private final Point position;
     private final TEXT_COLOR textColor;
 
-    private String indexes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ- ©□";
-
     private String[] string;
 
     MultiSprite multiSprite = new MultiSprite(CONSTANTS.CHUNK_SIZE_HALF, CONSTANTS.CHUNK_SIZE_HALF, ANCHORTYPE.TOP_LEFT);
@@ -26,7 +24,7 @@ public class Text {
 
         for (int i = 0; i < 4 * 6; i++) {
             for (int ii = 0; ii < 10; ii++) {
-                multiSprite.addFrames(pApplet, spriteMap, ii * 8 * 2, UTILS.chunksToPixel(i), 1);
+                multiSprite.addFrames(pApplet, spriteMap, ii * CONSTANTS.CHUNK_SIZE_HALF * 2, UTILS.chunksToPixel(i), 1);
             }
         }
     }
@@ -42,9 +40,10 @@ public class Text {
 
     public void draw(PApplet pApplet) {
         for (int i = 0; i < string.length; i++) {
+            String indexes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ- ©□";
             int indexOfKey = indexes.indexOf(string[i]);
             multiSprite.setFrame(indexOfKey + textColor.getI() * 40);
-            multiSprite.draw(pApplet, new Point(position.getX() + 8 * i, position.getY()));
+            multiSprite.draw(pApplet, new Point(position.getX() + i * CONSTANTS.CHUNK_SIZE_HALF, position.getY()));
         }
     }
 }

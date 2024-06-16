@@ -12,7 +12,7 @@ public class Log extends Floating {
 
     public Log(PApplet pApplet, PImage logSprite,  int width, double speed, int startPosition) {
         super(pApplet, width, speed, startPosition);
-        setHitboxRelativ(hitbox);
+        setHitboxRelative(hitbox);
 
         getMultiSprite().addFrames(pApplet, logSprite, 0, 0, 3);
     }

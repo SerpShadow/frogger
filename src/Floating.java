@@ -28,7 +28,7 @@ public class Floating extends Obstacle {
 
     @Override
     protected void checkPosition() {
-        if (getSpeed() > 0) {
+        if (getMovementSpeed() > 0) {
             if (getPositionX() + getWidthInPixel() > CONSTANTS.PIXEL_HORIZONTAL * 2) {
                 setPositionX(-getWidthInPixel()); // move object to the left but -width to render outside the screen
             }

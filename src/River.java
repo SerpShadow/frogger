@@ -4,12 +4,12 @@ import processing.core.PApplet;
 
 public abstract class River extends Floor {
 
-    private RIVER_TYPE riverType;
-    private double speed;
+    private final RIVER_TYPE riverType;
+    private double getMovementSpeed;
 
-    public River(PApplet pApplet, RIVER_TYPE riverType, double speed) {
+    public River(PApplet pApplet, RIVER_TYPE riverType, double getMovementSpeed) {
         this.riverType = riverType;
-        this.speed = speed;
+        this.getMovementSpeed = getMovementSpeed;
 
     }
 
@@ -17,8 +17,8 @@ public abstract class River extends Floor {
         return riverType;
     }
 
-    public double getSpeed() {
-        return speed;
+    public double getMovementSpeed() {
+        return getMovementSpeed;
     }
 
     public abstract boolean checkCollision(Hitbox frogHitbox);

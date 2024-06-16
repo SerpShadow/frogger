@@ -32,11 +32,11 @@ public class Snake extends Obstacle {
 
     @Override
     protected void checkPosition() {
-        if (getSpeed() > 0) {
+        if (getMovementSpeed() > 0) {
             if (getPositionX() >= CONSTANTS.PIXEL_HORIZONTAL) {
 
                 if (UTILS.randomBoolean(0.5)) {
-                    setSpeed(getSpeed() * -1);
+                    setMovementSpeed(getMovementSpeed() * -1);
                     sequencedSprite.gotoSequence("left");
                 } else {
                     setPositionX(-UTILS.chunksToPixel(2));
@@ -45,7 +45,7 @@ public class Snake extends Obstacle {
         } else {
             if (getPositionX() <= -UTILS.chunksToPixel(2)) {
                 if (UTILS.randomBoolean(0.5)) {
-                    setSpeed(getSpeed() * -1);
+                    setMovementSpeed(getMovementSpeed() * -1);
                     sequencedSprite.gotoSequence("right");
                 } else {
                     setPositionX(CONSTANTS.PIXEL_HORIZONTAL);

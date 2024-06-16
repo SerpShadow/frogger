@@ -21,7 +21,7 @@ public class Turtle extends Floating {
     public Turtle(PApplet pApplet, PImage turtleSprite, int width, double speed, int startPosition, boolean isSubmerging) {
         super(pApplet, width, speed, startPosition);
         this.isSubmerging = isSubmerging;
-        setHitboxRelativ(hitbox);
+        setHitboxRelative(hitbox);
 
         getMultiSprite().addFrames(pApplet, turtleSprite, 0, 0, 4);
         getMultiSprite().addFrameCopy(3);
@@ -40,9 +40,9 @@ public class Turtle extends Floating {
         if (isSubmerging) {
             counter = (pApplet.millis() / 300) % 10;
             if (counter == 6) {
-                setHitboxRelativ(new Hitbox(0, -getWidthInPixel(), -getHeightInPixel(), 0));
+                setHitboxRelative(new Hitbox(0, -getWidthInPixel(), -getHeightInPixel(), 0));
             } else if (counter == 7) {
-                setHitboxRelativ(hitbox);
+                setHitboxRelative(hitbox);
             }
         } else {
             counter = (pApplet.millis() / 500) % 3;

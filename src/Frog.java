@@ -9,23 +9,22 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 
-public class Frog {
+public class Frog extends GameObject {
 
     private final int width = CONSTANTS.CHUNK_SIZE;
     private final int height = CONSTANTS.CHUNK_SIZE;
+    private final Point startPosition;
+
     private boolean dead = false;
     private boolean inputBlocked = false;
 
 
     private final SequencedSprite sequencedSprite = new SequencedSprite(width, height, 30, ANCHORTYPE.TOP_LEFT);
-    private Point positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
-    private Point positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
 
-    private final int movementSpeed;
-    private double movementX = 0;
-
-    public Frog(PApplet pApplet, int movementSpeed) {
-        this.movementSpeed = movementSpeed;
+    public Frog(PApplet pApplet, Point startPosition, int movementSpeed) {
+        super(1, movementSpeed, UTILS.chunksToPixel(7), new Hitbox(2, -2, -2, 2));
+        this.startPosition = startPosition;
+        setFrogToStartPosition();
 
         // Movement Frames
         PImage frogSprite = pApplet.loadImage("assets/frog.png");
@@ -54,18 +53,11 @@ public class Frog {
         sequencedSprite.gotoSequence("up");
     }
 
-    public Frog(PApplet pApplet, int movementSpeed, Point startPosition) {
-        this(pApplet, movementSpeed);
-        positionCurrent = new Point(startPosition.getX(), startPosition.getY());
-        positionAbsolute = new Point(startPosition.getX(), startPosition.getY());
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    private void setFrogToStartPosition() {
+        setPositionX(startPosition.getX());
+        setPositionY(startPosition.getY());
+        setDestinationX(startPosition.getX());
+        setDestinationY(startPosition.getY());
     }
 
     public boolean isInputBlocked() {
@@ -76,50 +68,14 @@ public class Frog {
         return sequencedSprite;
     }
 
-    public Point getPositionCurrent() {
-        return positionCurrent;
-    }
-
-    public void setPositionCurrentX(int positionX) {
-        positionCurrent.setX(positionX);
-    }
-
-    public Point getPositionAbsolute() {
-        return positionAbsolute;
-    }
-
-    public void setPositionAbsolute(Point positionAbsolute) {
-        this.positionAbsolute = positionAbsolute;
-    }
-
-    public void setPositionAbsoluteX(int positionX) {
-        positionAbsolute.setX(positionX);
-    }
-
-    public void setPositionAbsoluteY(int positionY) {
-        positionAbsolute.setY(positionY);
-    }
-
-    public void increaseMovementXBy(double amount) {
-        movementX += amount;
-    }
-
     public boolean isDead() {
         return dead;
-    }
-
-    public boolean isMoving() {
-        return positionCurrent.getX() != positionAbsolute.getX() || positionCurrent.getY() != positionAbsolute.getY();
-    }
-
-    public Hitbox getHitbox() {
-        return new Hitbox(positionCurrent.getY() + 2, positionCurrent.getX() + width - 2, positionCurrent.getY() + height - 2, positionCurrent.getX() + 2);
     }
 
     public void onDeath() {
         if (dead) return;
         dead = true;
-        if (UTILS.pixelToChunks(positionCurrent.getY()) < CONSTANTS.CHUNKS_VERTICAL / 2) {
+        if (UTILS.pixelToChunks(getPositionY()) < CONSTANTS.CHUNKS_VERTICAL / 2) {
             sequencedSprite.gotoSequence("death-water");
         } else {
             sequencedSprite.gotoSequence("death-land");
@@ -127,8 +83,7 @@ public class Frog {
 
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             dead = false;
-            positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
-            positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
+            setFrogToStartPosition();
             sequencedSprite.gotoSequence("up");
 
         });
@@ -138,36 +93,27 @@ public class Frog {
         inputBlocked = true;
         sequencedSprite.gotoSequence("dead");
 
-        positionCurrent = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
-        positionAbsolute = new Point(7 * CONSTANTS.CHUNK_SIZE, 14 * CONSTANTS.CHUNK_SIZE);
-
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             inputBlocked = false;
+            setFrogToStartPosition();
             sequencedSprite.gotoSequence("up");
         });
     }
 
     public void draw(PApplet pApplet) {
+        super.draw(pApplet);
 
-        if (Math.abs(movementX) >= 1) {
-            positionCurrent.setX(positionCurrent.getX() + (int) movementX);
-            positionAbsolute.setX(positionAbsolute.getX() + (int) movementX);
-            movementX = 0;
+        if (getDestinationX() < getPositionX()) {
+            setPositionX(getPositionX() - (int) getMovementSpeed());
+        } else if (getDestinationX() > getPositionX()) {
+            setPositionX(getPositionX() + (int) getMovementSpeed());
         }
-
-        if (positionAbsolute.getX() < positionCurrent.getX()) {
-            positionCurrent.setX(positionCurrent.getX() - movementSpeed);
+        if (getDestinationY() < getPositionY()) {
+            setPositionY(getPositionY() - (int) getMovementSpeed());
+        } else if (getDestinationY() > getPositionY()) {
+            setPositionY(getPositionY() + (int) getMovementSpeed());
         }
-        if (positionAbsolute.getX() > positionCurrent.getX()) {
-            positionCurrent.setX(positionCurrent.getX() + movementSpeed);
-        }
-        if (positionAbsolute.getY() < positionCurrent.getY()) {
-            positionCurrent.setY(positionCurrent.getY() - movementSpeed);
-        }
-        if (positionAbsolute.getY() > positionCurrent.getY()) {
-            positionCurrent.setY(positionCurrent.getY() + movementSpeed);
-        }
-        sequencedSprite.draw(pApplet, positionCurrent);
+        sequencedSprite.draw(pApplet, getPosition());
     }
 
 }

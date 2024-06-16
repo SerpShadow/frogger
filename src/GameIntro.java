@@ -82,7 +82,7 @@ public class GameIntro {
     }
 
     private void addNewFrog(int index) {
-        FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition);
+        FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition, 8);
         frogAuto.goToPositionX(UTILS.chunksToPixel(2) + UTILS.chunksToPixel(1.5) * index);
         frogs.add(frogAuto);
     }

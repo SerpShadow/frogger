@@ -33,6 +33,9 @@ public class GameController {
     private long remainingSeconds;
     private long endTime = System.currentTimeMillis() + 60 * 1000;
 
+    private int frogPrevMaxPositionY = UTILS.chunksToPixel(14);
+
+
     public GameController(PApplet pApplet, Game game) {
         this.pApplet = pApplet;
         this.game = game;
@@ -51,14 +54,14 @@ public class GameController {
 
     }
 
-    public void keyPressed(int keyCode, Game game) {
+    public void keyPressed(int keyCode) {
         if (keyCode == 75) {
             UTILS.setCurrentLevel(0);
             startNextLevel();
         } else if (keyCode == 76) {
             startNextLevel();
         } else {
-            frogManual.keyPressed(keyCode, game);
+            frogManual.keyPressed(keyCode);
         }
     }
 
@@ -121,8 +124,8 @@ public class GameController {
 
     private void checkCollision() {
         if (!frogManual.isDead()) {
-            Hitbox frogHitbox = frogManual.getHitbox();
-            int frogPositionY = frogManual.getPositionCurrent().getY();
+            Hitbox frogHitbox = frogManual.getHitboxAbsolute(0);
+            int frogPositionY = frogManual.getPositionY();
 
             int homePositionY = 32;
             if (frogPositionY == homePositionY) {
@@ -143,7 +146,7 @@ public class GameController {
                 int riverPositionY = river.getRiverType().getPositionY();
                 if (frogPositionY == riverPositionY) {
                     if (river.checkCollision(frogHitbox)) {
-                        frogManual.increaseMovementXBy(river.getSpeed());
+                        frogManual.increaseFixedMovementXBy(river.getMovementSpeed());
                     } else {
                         handleDeath();
                     }
@@ -166,6 +169,7 @@ public class GameController {
                 }
             }
 
+            // check if frog is outside of the allowed area
             if (!UTILS.isColliding(frogHitbox, new Hitbox(0, CONSTANTS.PIXEL_HORIZONTAL, CONSTANTS.PIXEL_VERTICAL, 0))) {
                 handleDeath();
             }
@@ -177,6 +181,12 @@ public class GameController {
     }
 
     public void draw(PApplet pApplet) {
+
+        if (frogManual.getDestinationY() < frogPrevMaxPositionY ) {
+            frogPrevMaxPositionY = frogManual.getDestinationY();
+            game.increaseScoreBy(10);
+        }
+
         home.draw(pApplet);
         for (River river : rivers) {
             river.draw(pApplet);

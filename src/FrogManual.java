@@ -1,13 +1,17 @@
 import General.CONSTANTS;
 import General.UTILS;
+import SpriteLib.Point;
 import SpriteLib.Sequence;
 import SpriteLib.SequencedSprite;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class FrogManual extends Frog {
+
+    private int prevMaxPositionY = UTILS.chunksToPixel(14);
+
     public FrogManual(PApplet pApplet) {
-        super(pApplet, CONSTANTS.SPEED_FROG);
+        super(pApplet, new Point(UTILS.chunksToPixel(7), UTILS.chunksToPixel(14)), CONSTANTS.SPEED_FROG);
 
         SequencedSprite sequencedSprite = getSequencedSprite();
 
@@ -22,21 +26,20 @@ public class FrogManual extends Frog {
         sequencedSprite.addSequence(new Sequence("right-move", "right", 10, 11, 11, 10));
     }
 
-    public void keyPressed(int keyCode, Game game) {
-        if (isInputBlocked() || isDead() || getPositionAbsolute().getX() != getPositionCurrent().getX() || getPositionAbsolute().getY() != getPositionCurrent().getY()) {
+    public void keyPressed(int keyCode) {
+        if (isInputBlocked() || isDead() || isMoving()) {
             return;
         }
 
         switch (keyCode) {
             case PConstants.UP:
                 goUp();
-                game.increaseScoreBy(CONSTANTS.POINTS_PER_STEP);
                 break;
             case PConstants.LEFT:
                 goLeft();
                 break;
             case PConstants.DOWN:
-                if (getPositionAbsolute().getY() < UTILS.chunksToPixel(14)) {
+                if (getDestinationY() < UTILS.chunksToPixel(14)) {
                     goDown();
                 }
                 break;
@@ -50,21 +53,27 @@ public class FrogManual extends Frog {
 
     public void goUp() {
         getSequencedSprite().gotoSequence("up-move");
-        setPositionAbsoluteY(getPositionAbsolute().getY() - getHeight());
+        setDestinationY(getDestinationY() - getHeightInPixel());
     }
 
     public void goLeft() {
         getSequencedSprite().gotoSequence("left-move");
-        setPositionAbsoluteX(getPositionAbsolute().getX() - getWidth());
+        setDestinationX(getDestinationX() - getWidthInPixel());
     }
 
     public void goDown() {
         getSequencedSprite().gotoSequence("down-move");
-        setPositionAbsoluteY(getPositionAbsolute().getY() + getHeight());
+        setDestinationY(getDestinationY() + getHeightInPixel());
     }
 
     public void goRight() {
         getSequencedSprite().gotoSequence("right-move");
-        setPositionAbsoluteX(getPositionAbsolute().getX() + getWidth());
+        setDestinationX(getDestinationX() + getWidthInPixel());
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        prevMaxPositionY = UTILS.chunksToPixel(14);
     }
 }

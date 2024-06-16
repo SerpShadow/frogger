@@ -7,8 +7,8 @@ public class FrogAuto extends Frog {
 
     private boolean isParked = true;
 
-    public FrogAuto(PApplet pApplet, Point startPosition) {
-        super(pApplet, 8, startPosition);
+    public FrogAuto(PApplet pApplet, Point startPosition, int movementSpeed) {
+        super(pApplet, startPosition, movementSpeed);
 
         SequencedSprite sequencedSprite = getSequencedSprite();
 
@@ -17,29 +17,27 @@ public class FrogAuto extends Frog {
         sequencedSprite.addSequence(new Sequence("animation-left", "animation-left", 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4));
     }
 
-    public void goToPositionX(int newXPosition) {
-        if (newXPosition != getPositionAbsolute().getX()) {
+    public void goToPositionX(int positionX) {
+        if (positionX != getDestinationX()) {
             isParked = false;
-            if (newXPosition > getPositionAbsolute().getX()) {
+            if (positionX > getDestinationX()) {
                 startAnimationRight();
             } else {
                 startAnimationLeft();
             }
-            getPositionAbsolute().setX(newXPosition);
+            setDestinationX(positionX);
         }
     }
 
-    public void goToPositionY(int newYPosition) {
-
-        if (newYPosition != getPositionAbsolute().getY()) {
+    public void goToPositionY(int positionY) {
+        if (positionY != getDestinationY()) {
             isParked = false;
-            if (newYPosition > getPositionAbsolute().getY()) {
+            if (positionY > getDestinationY()) {
                 startAnimationDown();
-
             } else {
                 startAnimationUp();
             }
-            getPositionAbsolute().setY(newYPosition);
+            setDestinationY(positionY);
         }
     }
 

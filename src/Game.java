@@ -67,7 +67,7 @@ public class Game {
                 setGameStage(GAME_STAGE.MAIN);
             }
         } else {
-            gameController.keyPressed(keyCode, this);
+            gameController.keyPressed(keyCode);
         }
     }
 
