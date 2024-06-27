@@ -8,6 +8,10 @@ import processing.core.PConstants;
 
 public class FrogManual extends Frog {
 
+    /**
+     *
+     * @param pApplet the PApplet instance for drawing
+     */
     public FrogManual(PApplet pApplet) {
         super(pApplet, new Point(UTILS.chunksToPixel(7), UTILS.chunksToPixel(14)), CONSTANTS.SPEED_FROG);
 

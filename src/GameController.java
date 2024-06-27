@@ -13,13 +13,16 @@ import processing.core.PImage;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Controls the game logic, including managing game entities, handling user input, and maintaining game state.
+ */
 public class GameController {
 
     private final PApplet pApplet;
     private final Game game;
 
     private final Home home;
-    private Grass medianStrip;
+    private final Grass medianStrip;
     private final Grass startStrip;
     private final FrogManual frogManual;
 
@@ -36,6 +39,12 @@ public class GameController {
     private int frogPrevMaxPositionY = UTILS.chunksToPixel(14);
 
 
+    /**
+     * Initializes the game controller with necessary game components and UI elements.
+     *
+     * @param pApplet The Processing applet used for drawing.
+     * @param game The main game object managing different game screens.
+     */
     public GameController(PApplet pApplet, Game game) {
         this.pApplet = pApplet;
         this.game = game;
@@ -54,6 +63,12 @@ public class GameController {
 
     }
 
+
+    /**
+     * Processes keypress events to control the frog or manage game functions.
+     *
+     * @param keyCode The keycode representing the key pressed by the user.
+     */
     public void keyPressed(int keyCode) {
         if (keyCode == 75) {
             UTILS.setCurrentLevel(0);
@@ -88,6 +103,9 @@ public class GameController {
 
     }
 
+    /**
+     * Restarts the timer for the current level or game state, used when replaying or advancing levels.
+     */
     private void restartTimer() {
         CompletableFuture.delayedExecutor(CONSTANTS.RESPAWN_DELAY, TimeUnit.MILLISECONDS).execute(() -> {
             endTime = System.currentTimeMillis() + 60 * 1000;
@@ -182,7 +200,7 @@ public class GameController {
                 }
             }
 
-            // check if frog is outside of the allowed area
+            // check if frog is outside the allowed area
             if (!UTILS.isColliding(frogHitbox, new Hitbox(0, CONSTANTS.PIXEL_HORIZONTAL, CONSTANTS.PIXEL_VERTICAL, 0))) {
                 handleDeath();
             }
@@ -229,6 +247,12 @@ public class GameController {
         pApplet.popMatrix();
     }
 
+    /**
+     * Draws the game UI, entities, and handles game logic updates.
+     * This method should be called repeatedly in the draw loop of the Processing applet.
+     *
+     * @param pApplet The Processing applet used for drawing.
+     */
     public void draw(PApplet pApplet) {
 
         if (frogManual.getDestinationY() < frogPrevMaxPositionY) {

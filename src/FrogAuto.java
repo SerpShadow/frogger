@@ -7,6 +7,13 @@ public class FrogAuto extends Frog {
 
     private boolean isParked = true;
 
+
+    /**
+     *
+     * @param pApplet the PApplet instance for drawing
+     * @param startPosition the starting position of the turtle
+     * @param movementSpeed the movement speed of the turtle
+     */
     public FrogAuto(PApplet pApplet, Point startPosition, int movementSpeed) {
         super(pApplet, startPosition, movementSpeed);
 
@@ -17,6 +24,10 @@ public class FrogAuto extends Frog {
         sequencedSprite.addSequence(new Sequence("animation-left", "animation-left", 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4));
     }
 
+    /**
+     * Starts the animation and sets destination
+     * @param positionX is the new x-position
+     */
     public void goToPositionX(int positionX) {
         if (positionX != getDestinationX()) {
             isParked = false;
@@ -29,6 +40,10 @@ public class FrogAuto extends Frog {
         }
     }
 
+    /**
+     * Starts the animation and sets destination
+     * @param positionY is the new y-position
+     */
     public void goToPositionY(int positionY) {
         if (positionY != getDestinationY()) {
             isParked = false;
@@ -56,6 +71,7 @@ public class FrogAuto extends Frog {
     private void startAnimationLeft() {
         getSequencedSprite().gotoSequence("animation-left");
     }
+
 
     @Override
     public void draw(PApplet pApplet) {

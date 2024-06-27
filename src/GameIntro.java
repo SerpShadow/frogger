@@ -9,23 +9,31 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 
+/**
+ * Handles the introduction animation sequence of the game, displaying a sequence of title animation, point table,
+ * and score ranking before the actual gameplay starts.
+ */
 public class GameIntro {
 
-
-    private PApplet pApplet;
+    private final PApplet pApplet;
     private GAME_INTRO_STAGE gameIntroStage = GAME_INTRO_STAGE.SPAWNING;
     private int counter = 0;
 
-    private ArrayList<FrogAuto> frogs = new ArrayList<>();
-    private Point frogStartPosition = new Point(CONSTANTS.PIXEL_HORIZONTAL, (int) (7.5 * CONSTANTS.CHUNK_SIZE));
+    private final ArrayList<FrogAuto> frogs = new ArrayList<>();
+    private final Point frogStartPosition = new Point(CONSTANTS.PIXEL_HORIZONTAL, (int) (7.5 * CONSTANTS.CHUNK_SIZE));
 
-    private MultiSprite multiSprite = new MultiSprite(24, (int) ((int) CONSTANTS.CHUNK_SIZE * 1.5), ANCHORTYPE.TOP_LEFT);
+    private final MultiSprite multiSprite = new MultiSprite(24, (int) ((int) CONSTANTS.CHUNK_SIZE * 1.5), ANCHORTYPE.TOP_LEFT);
 
-    private ArrayList<ArrayList<Text>> pointTable = new ArrayList<>();
-    private Text copyRight;
+    private final ArrayList<ArrayList<Text>> pointTable = new ArrayList<>();
+    private final Text copyRight;
 
-    private ScoreRanking scoreRanking;
+    private final ScoreRanking scoreRanking;
 
+    /**
+     * Constructs a GameIntro instance, initializing the title animation, point table texts, and score ranking view.
+     *
+     * @param pApplet the PApplet instance for drawing operations.
+     */
     public GameIntro(PApplet pApplet) {
         this.pApplet = pApplet;
 
@@ -69,16 +77,20 @@ public class GameIntro {
         addNewFrog(0);
     }
 
+    /**
+     * Retrieves the current stage of the game intro.
+     *
+     * @return The current {@link GAME_INTRO_STAGE} of the intro.
+     */
     public GAME_INTRO_STAGE getGameIntroStage() {
         return gameIntroStage;
     }
 
-    public void keyPressed(int key) {
-        if (gameIntroStage == GAME_INTRO_STAGE.SCORE_RANKING) {
-
-        }
-    }
-
+    /**
+     * Adds a new frog to the intro animation sequence at a specified index.
+     *
+     * @param index The index at which the new frog is added to the animation sequence.
+     */
     private void addNewFrog(int index) {
         FrogAuto frogAuto = new FrogAuto(pApplet, frogStartPosition, 2);
         frogAuto.goToPositionX(UTILS.chunksToPixel(2) + UTILS.chunksToPixel(1.5) * index);
@@ -102,8 +114,13 @@ public class GameIntro {
         }
     }
 
+    /**
+     * Draws the game intro sequence, updating according to the current animation stage.
+     * Manages transitions between SPAWNING, MOVING_UP, TITLE, POINT_TABLE, and SCORE_RANKING stages.
+     *
+     * @param pApplet The PApplet instance for drawing.
+     */
     public void draw(PApplet pApplet) {
-
 
         switch (gameIntroStage) {
             case SPAWNING:
@@ -129,7 +146,7 @@ public class GameIntro {
                     frogAuto.draw(pApplet);
                 }
 
-                if (!frogs.get(0).isMoving()) {
+                if (!frogs.getFirst().isMoving()) {
                     counter = 0;
                     gameIntroStage = GAME_INTRO_STAGE.TITLE;
 
@@ -176,19 +193,6 @@ public class GameIntro {
                 scoreRanking.draw(pApplet);
                 break;
         }
-
-//        for (Frog frog : frogs) {
-//            frog.draw(pApplet);
-//
-//        }
-
-
-//        if (counter % 10 == 0) {
-////            frog.goLeft();
-//        }
-
-
-//        frog.draw(pApplet);
 
         counter += 1;
     }

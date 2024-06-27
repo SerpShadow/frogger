@@ -4,19 +4,25 @@ import SpriteLib.Point;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * The Turtle class represents a floating turtle that can optionally submerge.
+ * It extends the Floating class and uses the Processing library for drawing.
+ */
 public class Turtle extends Floating {
-    private Hitbox hitbox = new Hitbox(0, -8, 0, 8);
+    private final Hitbox hitbox = new Hitbox(0, -8, 0, 8);
 
     private final boolean isSubmerging;
 
 
     /**
-     * @param pApplet
-     * @param turtleSprite
-     * @param width         in chunks
-     * @param speed
-     * @param startPosition
-     * @param isSubmerging
+     * Constructs a new Turtle.
+     *
+     * @param pApplet       the PApplet instance for drawing
+     * @param turtleSprite  the sprite image of the turtle
+     * @param width         the width of the turtle in chunks
+     * @param speed         the speed of the turtle
+     * @param startPosition the starting position of the turtle
+     * @param isSubmerging  indicates if the turtle is submerging
      */
     public Turtle(PApplet pApplet, PImage turtleSprite, int width, double speed, int startPosition, boolean isSubmerging) {
         super(pApplet, width, speed, startPosition);
@@ -31,6 +37,11 @@ public class Turtle extends Floating {
         getMultiSprite().addFrameCopy(3);
     }
 
+    /**
+     * Draws the turtle on the given PApplet instance.
+     *
+     * @param pApplet the PApplet instance for drawing
+     */
     @Override
     public void draw(PApplet pApplet) {
         super.draw(pApplet);
@@ -40,6 +51,7 @@ public class Turtle extends Floating {
         if (isSubmerging) {
             counter = (pApplet.millis() / 300) % 10;
             if (counter == 6) {
+                // remove Hitbox
                 setHitboxRelative(new Hitbox(0, -getWidthInPixel(), -getHeightInPixel(), 0));
             } else if (counter == 7) {
                 setHitboxRelative(hitbox);

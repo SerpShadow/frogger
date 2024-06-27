@@ -7,8 +7,8 @@ public enum RIVER_TYPE {
     FOURTH(UTILS.chunksToPixel(6), UTILS.chunksToPixel(3)),
     FIFTH(UTILS.chunksToPixel(7), UTILS.chunksToPixel(3));
 
-    private int positionY;
-    private int width;
+    private final int positionY;
+    private final int width;
 
     RIVER_TYPE(int positionY, int width) {
         this.positionY = positionY;

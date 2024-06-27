@@ -54,6 +54,10 @@ public class Home extends Floor {
         return false;
     }
 
+    /**
+     * Draw background, one loop for each row of chunks
+     * @param pApplet
+     */
     private void drawHome(PApplet pApplet) {
         for (int i = 0; i < CONSTANTS.CHUNKS_HORIZONTAL * 2; i++) {
             switch (i % 6) {

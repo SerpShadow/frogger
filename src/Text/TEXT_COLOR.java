@@ -7,7 +7,7 @@ public enum TEXT_COLOR {
     BLUE(3),
     PURPLE(4);
 
-    private int i;
+    private final int i;
 
     TEXT_COLOR(int i) {
         this.i = i;

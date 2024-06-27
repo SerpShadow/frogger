@@ -19,6 +19,13 @@ public class Frog extends GameObject {
 
     private final SequencedSprite sequencedSprite = new SequencedSprite(CONSTANTS.CHUNK_SIZE, CONSTANTS.CHUNK_SIZE, 30, ANCHORTYPE.TOP_LEFT);
 
+    /**
+     * Constructs a Frog object with the specified parameters.
+     *
+     * @param pApplet       the PApplet instance
+     * @param startPosition the starting position of the frog
+     * @param movementSpeed the speed of the frog's movement
+     */
     public Frog(PApplet pApplet, Point startPosition, int movementSpeed) {
         super(1, movementSpeed, UTILS.chunksToPixel(7), new Hitbox(2, -2, -2, 2));
         this.startPosition = startPosition;
@@ -51,6 +58,9 @@ public class Frog extends GameObject {
         sequencedSprite.gotoSequence("up");
     }
 
+    /**
+     * Sets the frog to its starting position.
+     */
     private void setFrogToStartPosition() {
         setPositionX(startPosition.getX());
         setPositionY(startPosition.getY());
@@ -58,18 +68,36 @@ public class Frog extends GameObject {
         setDestinationY(startPosition.getY());
     }
 
+    /**
+     * Checks if the input is blocked.
+     *
+     * @return true if input is blocked, false otherwise
+     */
     public boolean isInputBlocked() {
         return inputBlocked;
     }
 
+    /**
+     * Gets the sequenced sprite of the frog.
+     *
+     * @return the sequenced sprite
+     */
     public SequencedSprite getSequencedSprite() {
         return sequencedSprite;
     }
 
+    /**
+     * Checks if the frog is dead.
+     *
+     * @return true if the frog is dead, false otherwise
+     */
     public boolean isDead() {
         return dead;
     }
 
+    /**
+     * Handles the frog's death sequence.
+     */
     public void onDeath() {
         if (dead) return;
         dead = true;
@@ -87,6 +115,9 @@ public class Frog extends GameObject {
         });
     }
 
+    /**
+     * Handles the frog's restart sequence.
+     */
     public void onRestart() {
         inputBlocked = true;
         setFrogToStartPosition();
@@ -98,6 +129,11 @@ public class Frog extends GameObject {
         });
     }
 
+    /**
+     * Draws the frog on the PApplet and checks if the position needs to be changed based on the destination.
+     *
+     * @param pApplet the PApplet instance
+     */
     public void draw(PApplet pApplet) {
         super.draw(pApplet);
 

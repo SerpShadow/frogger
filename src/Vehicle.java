@@ -5,10 +5,23 @@ import SpriteLib.MultiSprite;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * Represents a vehicle object in the game, which is a type of obstacle that the player must avoid.
+ * Vehicles are visually represented with a `MultiSprite` that can handle multiple vehicle types.
+ */
 public class Vehicle extends Obstacle {
 
     private final MultiSprite multiSprite;
 
+    /**
+     * Constructs a Vehicle object with a specified sprite map, vehicle type, speed, and starting position.
+     *
+     * @param pApplet       The Processing applet used for drawing, which provides context and graphical functionality.
+     * @param spriteMap     The sprite map image containing the vehicle graphics.
+     * @param vehicleType   The type of the vehicle, which determines its appearance and dimensions.
+     * @param speed         The horizontal movement speed of the vehicle.
+     * @param startPosition The starting X coordinate of the vehicle.
+     */
     public Vehicle(PApplet pApplet, PImage spriteMap, VEHICLE_TYPE vehicleType, double speed, int startPosition) {
         super(vehicleType.getWidth(), speed, startPosition, new Hitbox(0, 0, 0, 0));
 
@@ -42,6 +55,10 @@ public class Vehicle extends Obstacle {
 
     }
 
+    /**
+     * Checks and updates the vehicle's position based on its movement speed and the screen boundary.
+     * Vehicles reappear on the opposite side of the screen once they move off-screen.
+     */
     @Override
     protected void checkPosition() {
         if (getMovementSpeed() > 0) {
@@ -55,11 +72,16 @@ public class Vehicle extends Obstacle {
         }
     }
 
+    /**
+     * Draws the vehicle on the given PApplet canvas. This includes moving the vehicle based on its fixed movement and drawing its sprite.
+     *
+     * @param pApplet The PApplet instance (canvas) on which to draw the vehicle.
+     */
+
     @Override
     public void draw(PApplet pApplet) {
         super.draw(pApplet);
         multiSprite.draw(pApplet, getPosition());
-
 
 
     }
